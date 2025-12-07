@@ -4,230 +4,114 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>長跑比賽紀錄 - JSON/CSV 版</title>
-  
   <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: Arial, "Microsoft JhengHei", sans-serif;
-    background:#f0f2f5;
-    padding:20px;
-  }
-  .container {
-    max-width: 1800px;
-    margin:0 auto;
-    background:#fff;
-    border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.15);
-    overflow:hidden;
-  }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, "Microsoft JhengHei", sans-serif; background:#f0f2f5; padding:20px; }
+    .container { max-width: 1800px; margin:0 auto; background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.15); overflow:hidden; }
+    header { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; padding:30px; text-align:center; }
+    header h1 { font-size:2.2em; margin-bottom:8px; }
 
-  /* 頂部 header */
-  header {
-    background:linear-gradient(135deg,#667eea,#764ba2);
-    color:#fff;
-    padding:22px 22px 18px;
-    text-align:center;
-  }
-  header h1 {
-    font-size:2em;
-    margin-bottom:6px;
-  }
-  header p {
-    font-size:0.9em;
-    opacity:0.95;
-  }
+    .controls { padding:15px 20px; background:#f8f9fa; display:flex; flex-wrap:wrap; gap:10px; align-items:center; border-bottom:1px solid #e5e5e5; }
+    .controls input { flex:1; min-width:200px; padding:8px 10px; border-radius:4px; border:1px solid #ccc; }
+    .controls select { min-width:160px; padding:8px 10px; border-radius:4px; border:1px solid #ccc; }
+    .controls button { padding:8px 12px; border:none; border-radius:4px; background:#667eea; color:#fff; cursor:pointer; font-size:0.9em; }
+    .controls button.secondary { background:#6c757d; }
+    .controls button.success { background:#28a745; }
+    .controls button:hover { opacity:0.9; }
 
-  /* 上方控制列：搜尋 + 參賽者下拉 + 一條按鈕列 */
-  .controls {
-    padding:12px 18px;
-    background:#f8f9fa;
-    border-bottom:1px solid #e5e5e5;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-  }
+    .table-wrapper { padding:15px 20px 20px; overflow-x:auto; max-height:70vh; }
+    table { border-collapse:collapse; width:100%; font-size:0.9em; }
+    thead th { position:sticky; top:0; background:#667eea; color:#fff; padding:8px 6px; white-space:nowrap; z-index:1; }
+    tbody td { padding:6px 6px; border-bottom:1px solid #eee; }
+    tbody tr:nth-child(even) { background:#fafafa; }
+    tbody tr:hover { background:#f1f3f5; }
 
-  .controls input {
-    width:100%;
-    padding:8px 10px;
-    border-radius:4px;
-    border:1px solid #ccc;
-  }
+    .distance-tag { display:inline-block; padding:2px 6px; border-radius:4px; background:#667eea; color:#fff; font-size:0.8em; }
+    .race-number { text-align:center; font-weight:bold; color:#667eea; }
+    .action-btn { padding:4px 8px; font-size:0.8em; border:none; border-radius:4px; background:#0d6efd; color:#fff; cursor:pointer; }
+    .no-results { text-align:center; padding:30px; color:#777; }
+    .footer { padding:10px 20px 15px; background:#f8f9fa; font-size:0.8em; color:#666; border-top:1px solid #e5e5e5; }
 
-  .controls select {
-    width:100%;
-    padding:8px 10px;
-    border-radius:4px;
-    border:1px solid:#ccc;
-  }
-
-  /* 所有功能按鈕收在同一橫列 */
-  .controls-buttons {
-    display:flex;
-    flex-wrap:nowrap;
-    gap:6px;
-    overflow-x:auto;
-    padding-bottom:4px;
-  }
-
-  .controls button {
-    padding:8px 10px;
-    border:none;
-    border-radius:4px;
-    background:#667eea;
-    color:#fff;
-    cursor:pointer;
-    font-size:0.9em;
-    flex:0 0 auto;        /* 重要：一個一個並排，不會撐滿 */
-    white-space:nowrap;   /* 文字不換行 */
-  }
-  .controls button.secondary { background:#6c757d; }
-  .controls button.success { background:#28a745; }
-  .controls button:hover { opacity:0.9; }
-
-  .table-wrapper {
-    padding:12px 18px 18px;
-    overflow-x:auto;
-    max-height:70vh;
-  }
-  table {
-    border-collapse:collapse;
-    width:100%;
-    font-size:0.9em;
-  }
-  thead th {
-    position:sticky;
-    top:0;
-    background:#667eea;
-    color:#fff;
-    padding:8px 6px;
-    white-space:nowrap;
-    z-index:1;
-  }
-  tbody td {
-    padding:6px 6px;
-    border-bottom:1px solid:#eee;
-  }
-  tbody tr:nth-child(even) { background:#fafafa; }
-  tbody tr:hover { background:#f1f3f5; }
-
-  .distance-tag {
-    display:inline-block;
-    padding:2px 6px;
-    border-radius:4px;
-    background:#667eea;
-    color:#fff;
-    font-size:0.8em;
-  }
-  .action-btn {
-    padding:4px 8px;
-    font-size:0.8em;
-    border:none;
-    border-radius:4px;
-    background:#0d6efd;
-    color:#fff;
-    cursor:pointer;
-  }
-  .no-results {
-    text-align:center;
-    padding:30px;
-    color:#777;
-  }
-  .footer {
-    padding:10px 18px 15px;
-    background:#f8f9fa;
-    font-size:0.8em;
-    color:#666;
-    border-top:1px solid:#e5e5e5;
-  }
-
-  .empty-cell { background:#fff3cd !important; }
-  .date-cell { white-space:nowrap; }
-
-  .sortable { cursor:pointer; user-select:none; }
-  .sort-indicator {
-    font-size:0.8em;
-    margin-left:4px;
-    opacity:0.8;
-  }
-
-  /* Modal 相關（跟之前一樣） */
-  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; }
-  .modal.show { display:block; }
-  .modal-content {
-    background:#fff;
-    max-width:800px;
-    margin:5% auto;
-    padding:20px 20px 15px;
-    border-radius:8px;
-    max-height:85vh;
-    overflow-y:auto;
-  }
-  .modal-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-  }
-  .modal-header h2 { font-size:1.3em; }
-  .close-btn { border:none; background:none; font-size:1.6em; cursor:pointer; }
-
-  .form-grid {
-    display:grid;
-    grid-template-columns:repeat(2, minmax(0,1fr));
-    gap:10px;
-    margin-top:10px;
-  }
-  .form-grid.full { grid-template-columns:1fr; }
-  .form-group label {
-    font-size:0.85em;
-    font-weight:bold;
-    margin-bottom:3px;
-    display:block;
-  }
-  .form-group input {
-    width:100%;
-    padding:6px 8px;
-    border-radius:4px;
-    border:1px solid:#ccc;
-    font-size:0.85em;
-  }
-
-  .modal-buttons {
-    display:flex;
-    justify-content:flex-end;
-    gap:8px;
-    margin-top:15px;
-  }
-  .modal-buttons .secondary { background:#6c757d; color:#fff; }
-  .modal-buttons .delete-btn { background:#dc3545; color:#fff; }
-  .modal-buttons .success { background:#28a745; color:#fff; }
-
-  /* 手機版再微調一下 header 高度 */
-  @media (max-width:768px) {
-    body { padding:10px; }
-    .container { border-radius:8px; }
-
-    header {
-      padding:14px 10px 10px;
+    /* 空白欄位背景色（優先於 zebra/hover） */
+    .empty-cell {
+      background:#fff3cd !important;
     }
-    header h1 {
-      font-size:1.4em;
-      margin-bottom:4px;
+
+    /* 比賽日期不要換行 */
+    .date-cell {
+      white-space:nowrap;
     }
-    header p {
+
+    /* 排序樣式 */
+    .sortable {
+      cursor:pointer;
+      user-select:none;
+    }
+    .sort-indicator {
       font-size:0.8em;
+      margin-left:4px;
+      opacity:0.8;
     }
 
-    .table-wrapper {
-      padding:8px 10px 10px;
-      max-height:none;
-    }
-    table { font-size:0.8em; }
+    /* Modal 共用樣式 */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; }
+    .modal.show { display:block; }
+    .modal-content { background:#fff; max-width:800px; margin:5% auto; padding:20px 20px 15px; border-radius:8px; max-height:85vh; overflow-y:auto; }
+    .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .modal-header h2 { font-size:1.3em; }
+    .close-btn { border:none; background:none; font-size:1.6em; cursor:pointer; }
 
-    .form-grid { grid-template-columns:1fr; }
-  }
-</style>
+    .form-grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-top:10px; }
+    .form-grid.full { grid-template-columns:1fr; }
+    .form-group label { font-size:0.85em; font-weight:bold; margin-bottom:3px; display:block; }
+    .form-group input { width:100%; padding:6px 8px; border-radius:4px; border:1px solid:#ccc; font-size:0.85em; }
+
+    .modal-buttons { display:flex; justify-content:flex-end; gap:8px; margin-top:15px; }
+    .modal-buttons .secondary { background:#6c757d; color:#fff; }
+    .modal-buttons .delete-btn { background:#dc3545; color:#fff; }
+    .modal-buttons .success { background:#28a745; color:#fff; }
+
+    /* 下載區塊樣式 */
+    .demo-download-area {
+      background: #eef2f7;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border-left: 4px solid #667eea;
+      font-size: 0.9em;
+      line-height: 1.6;
+    }
+    .demo-download-area a {
+      color: #0d6efd;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 5px;
+    }
+    .demo-download-area a:hover {
+      text-decoration: underline;
+    }
+
+    /* 手機版排版調整：控制列改直式，方便選擇參賽者 */
+    @media (max-width:768px) {
+      body { padding:10px; }
+      .container { border-radius:8px; }
+      header h1 { font-size:1.6em; }
+
+      .controls {
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .controls input,
+      .controls select,
+      .controls button {
+        flex:none;
+        width:100%;
+      }
+
+      table { font-size:0.8em; }
+      .form-grid { grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -237,22 +121,27 @@
     </header>
 
     <div class="controls">
-  <input id="searchInput" ...>
-  <select id="runnerFilter" ...> ... </select>
+      <input id="searchInput" type="text" placeholder="🔍 搜尋中文 / 英文名稱、地點或參賽編號">
+      <select id="runnerFilter" onchange="onRunnerFilterChange()">
+        <option value="">參賽者(全部)</option>
+      </select>
 
-  <div class="controls-buttons">
-    <button onclick="filterByDistance('10')">10km</button>
-    <button onclick="filterByDistance('21')">半馬</button>
-    <button onclick="filterByDistance('42')">全馬</button>
-    <button onclick="filterByDistance('OTHER')">其他</button>
-    <button class="secondary" onclick="resetFilters()">重置</button>
-    <button class="success" onclick="openAddModal()">➕ 新增比賽</button>
-    <button class="secondary" onclick="triggerImportJson()">匯入 JSON</button>
-    <button class="secondary" onclick="downloadJSON()">匯出 JSON</button>
-    <button class="secondary" onclick="triggerImportCsv()">匯入 CSV</button>
-    <button class="secondary" onclick="downloadCSV()">匯出 CSV</button>
-  </div>
-</div>
+      <button onclick="filterByDistance('10')">10km</button>
+      <button onclick="filterByDistance('21')">半馬</button>
+      <button onclick="filterByDistance('42')">全馬</button>
+      <button onclick="filterByDistance('OTHER')">其他</button>
+
+      <button class="secondary" onclick="resetFilters()">重置</button>
+      <button class="success" onclick="openAddModal()">➕ 新增比賽</button>
+
+      <button class="secondary" onclick="triggerImportJson()">匯入 JSON</button>
+      <button class="secondary" onclick="downloadJSON()">匯出 JSON</button>
+      <button class="secondary" onclick="triggerImportCsv()">匯入 CSV</button>
+      <button class="secondary" onclick="downloadCSV()">匯出 CSV</button>
+
+      <input id="importJsonFile" type="file" accept=".json,application/json" style="display:none" onchange="importJSON(this.files[0])">
+      <input id="importCsvFile" type="file" accept=".csv,text/csv" style="display:none" onchange="importCSV(this.files[0])">
+    </div>
 
     <div class="table-wrapper">
       <table>
@@ -319,7 +208,7 @@
     <div class="footer">
       建議：每一個 JSON 或 CSV 檔案代表一套「長跑比賽紀錄」。<br>
       開啟本 HTML → 先匯入 JSON/CSV → 編輯 / 新增比賽 → 關閉前請務必匯出 JSON 備份。<br>
-      本頁面關閉時會嘗試自動匯出 JSON，但可能會被瀏覽器阻擋，請以手動匯出為主。
+      ※ 若您習慣使用 Excel 編輯，可下載 <a href="./test_races.csv" download>CSV 範例檔</a>，編輯後再匯入本系統。
     </div>
   </div>
 
@@ -328,8 +217,15 @@
       <div class="modal-header">
         <h2>載入比賽資料</h2>
       </div>
+      
+      <div class="demo-download-area">
+        <strong>🆕 初次使用？</strong><br>
+        如果您手邊沒有資料，可以下載以下範例檔案進行測試：<br>
+        📥 <a href="./test_races.json" target="_blank" download>下載 JSON 測試資料</a> (含多筆範例)<br>
+        📥 <a href="./test_races.csv" target="_blank" download>下載 CSV 範例檔</a> (可使用 Excel 編輯後匯入)
+      </div>
+
       <p style="margin-top:5px; margin-bottom:10px; font-size:0.9em;">
-        建議每一個 JSON 或 CSV 檔案代表一套「長跑比賽紀錄」。<br>
         請選擇要載入的方式：
       </p>
       <div class="modal-buttons" style="justify-content:flex-start;">
@@ -943,6 +839,7 @@
             row.push(field);
             field = "";
           } else if (c === "\r") {
+            // ignore
           } else if (c === "\n") {
             row.push(field);
             rows.push(row);
