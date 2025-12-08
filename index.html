@@ -7,18 +7,67 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, "Microsoft JhengHei", sans-serif; background:#f0f2f5; padding:20px; }
+    
+    /* Container 與 Header */
     .container { max-width: 1800px; margin:0 auto; background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.15); overflow:hidden; }
-    header { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; padding:30px; text-align:center; }
-    header h1 { font-size:2.2em; margin-bottom:8px; }
+    header { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; padding:20px; text-align:center; }
+    header h1 { font-size:1.8em; margin-bottom:5px; }
+    header p { font-size: 0.9em; opacity: 0.9; }
 
-    .controls { padding:15px 20px; background:#f8f9fa; display:flex; flex-wrap:wrap; gap:10px; align-items:center; border-bottom:1px solid #e5e5e5; }
-    .controls input { flex:1; min-width:200px; padding:8px 10px; border-radius:4px; border:1px solid #ccc; }
-    .controls select { min-width:160px; padding:8px 10px; border-radius:4px; border:1px solid #ccc; }
-    .controls button { padding:8px 12px; border:none; border-radius:4px; background:#667eea; color:#fff; cursor:pointer; font-size:0.9em; }
-    .controls button.secondary { background:#6c757d; }
-    .controls button.success { background:#28a745; }
-    .controls button:hover { opacity:0.9; }
+    /* --- 新版 Controls 佈局系統 (v1.0.2) --- */
+    .controls {
+      padding: 15px 20px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      flex-direction: column;
+      gap: 12px; /* 上下區塊間距 */
+    }
 
+    /* 第一排：搜尋與參賽者 (最重要) */
+    .control-row-main {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .control-row-main input { flex: 2; min-width: 200px; padding:8px 10px; border-radius:4px; border:1px solid #ccc; }
+    .control-row-main select { flex: 1; min-width: 140px; padding:8px 10px; border-radius:4px; border:1px solid #ccc; }
+
+    /* 第二排：距離篩選與功能按鈕 */
+    .control-row-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* 按鈕群組容器 */
+    .btn-group {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    /* 按鈕通用樣式 */
+    .controls button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background: #667eea;
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.9em;
+      white-space: nowrap; /* 防止按鈕文字換行 */
+      transition: background 0.2s;
+    }
+    .controls button.secondary { background: #6c757d; }
+    .controls button.success { background: #28a745; }
+    .controls button.outline { background: transparent; border: 1px solid #6c757d; color: #6c757d; }
+    .controls button.outline:hover { background: #e2e6ea; }
+    .controls button:hover { opacity: 0.9; }
+
+    /* --- 表格樣式 --- */
     .table-wrapper { padding:15px 20px 20px; overflow-x:auto; max-height:70vh; }
     table { border-collapse:collapse; width:100%; font-size:0.9em; }
     thead th { position:sticky; top:0; background:#667eea; color:#fff; padding:8px 6px; white-space:nowrap; z-index:1; }
@@ -33,25 +82,13 @@
     .footer { padding:10px 20px 15px; background:#f8f9fa; font-size:0.8em; color:#666; border-top:1px solid #e5e5e5; }
 
     /* 空白欄位背景色（優先於 zebra/hover） */
-    .empty-cell {
-      background:#fff3cd !important;
-    }
-
+    .empty-cell { background:#fff3cd !important; }
     /* 比賽日期不要換行 */
-    .date-cell {
-      white-space:nowrap;
-    }
+    .date-cell { white-space:nowrap; }
 
     /* 排序樣式 */
-    .sortable {
-      cursor:pointer;
-      user-select:none;
-    }
-    .sort-indicator {
-      font-size:0.8em;
-      margin-left:4px;
-      opacity:0.8;
-    }
+    .sortable { cursor:pointer; user-select:none; }
+    .sort-indicator { font-size:0.8em; margin-left:4px; opacity:0.8; }
 
     /* Modal 共用樣式 */
     .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; }
@@ -81,33 +118,40 @@
       font-size: 0.9em;
       line-height: 1.6;
     }
-    .demo-download-area a {
-      color: #0d6efd;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 0 5px;
-    }
-    .demo-download-area a:hover {
-      text-decoration: underline;
-    }
+    .demo-download-area a { color: #0d6efd; text-decoration: none; font-weight: bold; margin: 0 5px; }
+    .demo-download-area a:hover { text-decoration: underline; }
 
-    /* 手機版排版調整：控制列改直式，方便選擇參賽者 */
-    @media (max-width:768px) {
-      body { padding:10px; }
-      .container { border-radius:8px; }
-      header h1 { font-size:1.6em; }
+    /* --- 手機版針對性優化 (關鍵修正 v1.0.2) --- */
+    @media (max-width: 768px) {
+      body { padding: 0; background: #fff; } /* 移除 body padding 爭取空間 */
+      .container { border-radius: 0; box-shadow: none; } /* 手機版不需要圓角陰影 */
+      header { padding: 15px 10px; }
+      header h1 { font-size: 1.4em; }
+      
+      .controls { padding: 10px; gap: 10px; }
+      
+      /* 搜尋與篩選維持直式，但間距縮小 */
+      .control-row-main { flex-direction: column; gap: 8px; }
+      .control-row-main input, .control-row-main select { width: 100%; flex: none; }
 
-      .controls {
-        flex-direction:column;
-        align-items:stretch;
+      /* 第二排改為 Grid 佈局，強制一行顯示多個按鈕 */
+      .control-row-actions { display: block; } /* 取消 flex，改由內部 group 控制 */
+      
+      .btn-group {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 強制一行4個 */
+        gap: 5px;
+        margin-bottom: 8px;
       }
-      .controls input,
-      .controls select,
-      .controls button {
-        flex:none;
-        width:100%;
+      
+      /* 檔案操作按鈕：一行2個 */
+      .btn-group.file-ops {
+        grid-template-columns: repeat(2, 1fr);
       }
-
+      
+      /* 按鈕文字縮小以放入一行 */
+      .controls button { padding: 8px 4px; font-size: 0.85em; }
+      
       table { font-size:0.8em; }
       .form-grid { grid-template-columns:1fr; }
     }
@@ -121,23 +165,33 @@
     </header>
 
     <div class="controls">
-      <input id="searchInput" type="text" placeholder="🔍 搜尋中文 / 英文名稱、地點或參賽編號">
-      <select id="runnerFilter" onchange="onRunnerFilterChange()">
-        <option value="">參賽者(全部)</option>
-      </select>
+      <div class="control-row-main">
+        <input id="searchInput" type="text" placeholder="🔍 搜尋名稱、地點或編號...">
+        <select id="runnerFilter" onchange="onRunnerFilterChange()">
+          <option value="">參賽者(全部)</option>
+        </select>
+      </div>
 
-      <button onclick="filterByDistance('10')">10km</button>
-      <button onclick="filterByDistance('21')">半馬</button>
-      <button onclick="filterByDistance('42')">全馬</button>
-      <button onclick="filterByDistance('OTHER')">其他</button>
+      <div class="control-row-actions">
+        <div class="btn-group">
+          <button onclick="filterByDistance('10')">10km</button>
+          <button onclick="filterByDistance('21')">半馬</button>
+          <button onclick="filterByDistance('42')">全馬</button>
+          <button onclick="filterByDistance('OTHER')">其他</button>
+        </div>
 
-      <button class="secondary" onclick="resetFilters()">重置</button>
-      <button class="success" onclick="openAddModal()">➕ 新增比賽</button>
+        <div class="btn-group">
+          <button class="secondary outline" onclick="resetFilters()">重置</button>
+          <button class="success" onclick="openAddModal()">＋新增</button>
+        </div>
 
-      <button class="secondary" onclick="triggerImportJson()">匯入 JSON</button>
-      <button class="secondary" onclick="downloadJSON()">匯出 JSON</button>
-      <button class="secondary" onclick="triggerImportCsv()">匯入 CSV</button>
-      <button class="secondary" onclick="downloadCSV()">匯出 CSV</button>
+        <div class="btn-group file-ops">
+          <button class="secondary" onclick="triggerImportJson()">匯入 JSON</button>
+          <button class="secondary" onclick="downloadJSON()">匯出 JSON</button>
+          <button class="secondary" onclick="triggerImportCsv()">匯入 CSV</button>
+          <button class="secondary" onclick="downloadCSV()">匯出 CSV</button>
+        </div>
+      </div>
 
       <input id="importJsonFile" type="file" accept=".json,application/json" style="display:none" onchange="importJSON(this.files[0])">
       <input id="importCsvFile" type="file" accept=".csv,text/csv" style="display:none" onchange="importCSV(this.files[0])">
