@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>長跑比賽紀錄 - v1.5.0 (入口版)</title>
+  <title>長跑比賽紀錄 - v1.5.2 (修正版)</title>
   <style>
     :root {
       --primary: #667eea;
@@ -14,7 +14,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif; background:var(--bg); padding:20px; color: var(--text); }
     
-    /* --- LANDING PAGE STYLES (v1.5.0) --- */
+    /* --- LANDING PAGE STYLES --- */
     #landingPage {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 80vh; text-align: center; max-width: 600px; margin: 0 auto;
@@ -43,14 +43,13 @@
     .demo-link a { color: var(--primary); text-decoration: none; font-weight: bold; }
     .demo-link a:hover { text-decoration: underline; }
 
-    /* --- MAIN APP STYLES (Initially Hidden) --- */
-    #mainApp { display: none; } /* Hidden by default */
+    /* --- MAIN APP STYLES --- */
+    #mainApp { display: none; }
 
     .container { max-width: 1800px; margin:0 auto; background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1); min-height: 80vh; position: relative;}
     header { background:linear-gradient(135deg, var(--primary), #764ba2); color:#fff; padding:20px; text-align:center; border-radius: 12px 12px 0 0; }
     header h1 { font-size:1.8em; margin-bottom:5px; }
     
-    /* Controls */
     .controls { padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #e5e5e5; display: flex; flex-direction: column; gap: 12px; }
     .control-row-top input { width: 100%; padding:10px; border-radius:6px; border:1px solid var(--border); font-size:1em; }
     .control-row-filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -58,7 +57,6 @@
     .filter-select { padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: #fff; flex: 1; min-width: 100px; }
     #runnerFilter { flex: 1.5; min-width: 120px; }
     
-    /* Buttons */
     button { cursor: pointer; border: none; border-radius: 6px; font-size: 0.95em; transition: 0.2s; }
     .view-mode-group { display: flex; background: #e9ecef; padding: 2px; border-radius: 6px; flex-shrink: 0; }
     .view-mode-btn { padding: 6px 12px; background: transparent; color: #666; }
@@ -80,7 +78,6 @@
     .menu-divider { border-top: 1px solid #eee; margin: 4px 0; }
     .menu-item.cloud-item { color: #667eea; font-weight: bold; background: #f0f4ff; }
 
-    /* Table */
     .table-wrapper { padding:15px 20px 20px; overflow-x:auto; min-height: 400px; }
     table { border-collapse:collapse; width:100%; font-size:0.9em; min-width: 800px; }
     thead th { position:sticky; top:0; background:var(--primary); color:#fff; padding:10px 8px; white-space:nowrap; z-index:1; text-align: left; cursor: pointer; }
@@ -103,7 +100,6 @@
     .modal-header h2 { font-size:1.4em; color: #333; }
     .close-btn { font-size:2em; line-height: 1; color: #999; background: none; }
     
-    /* Edit Modal Layout */
     .edit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
     .field-full-mobile { grid-column: span 1; }
     .compact-zone {
@@ -131,9 +127,14 @@
     .delete-btn { background:#dc3545; color:#fff; margin-right: auto; }
     .success { background:#28a745; color:#fff; }
 
+    /* Footer & Copyright Styles (Modified) */
     .footer { padding:10px 20px 15px; background:#f8f9fa; font-size:0.8em; color:#666; border-top:1px solid #e5e5e5; margin-top: auto;}
+    .copyright { 
+      margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ddd; 
+      text-align: center; color: #bbb; font-size: 0.85em; font-weight: 300; letter-spacing: 1px; font-style: italic;
+    }
 
-    /* CLOUD MODAL STYLES */
+    /* Cloud Modal */
     .setup-guide { background: #fff8e1; border: 1px solid #ffe0b2; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 0.9em; }
     .setup-guide h4 { margin-top: 0; margin-bottom: 10px; color: #e65100; display: flex; align-items: center; gap: 5px; }
     .setup-guide ol { padding-left: 20px; margin: 0; color: #333; line-height: 1.6; }
@@ -146,7 +147,6 @@
 
     .cloud-input-section { margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 15px; }
     .cloud-status { padding: 10px; border-radius: 6px; background: #f1f3f5; margin-top: 10px; font-size: 0.9em; word-break: break-all; }
-    
     .cloud-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
     .cloud-btn { padding: 15px; border: 1px solid #ccc; border-radius: 8px; background: #fff; text-align: center; cursor: pointer; transition: 0.2s; }
     .cloud-btn:hover { background: #f8f9fa; border-color: #999; }
@@ -154,7 +154,7 @@
     .cloud-btn p { font-size: 0.85em; color: #666; margin: 0; }
     
     @media (max-width: 768px) {
-      body { padding: 20px 10px; } /* Slightly more padding for landing */
+      body { padding: 20px 10px; }
       .container { border-radius: 0; min-height: 100vh; }
       .controls { gap: 10px; }
       .filter-select { min-width: 45%; }
@@ -205,6 +205,8 @@
       <div class="demo-link">
         需要範例檔？ <a href="https://fungccc.github.io/running-race-log/demo/demo_rrlog.csv" download>點此下載 Demo CSV</a>
       </div>
+      
+      <div class="copyright" style="margin-top: 30px; border-top: none;">豐狂出品 • 紀錄每一步</div>
     </div>
   </div>
 
@@ -212,7 +214,7 @@
     <div class="container">
       <header>
         <h1>🏃‍♂️ 長跑比賽紀錄</h1>
-        <p>v1.5.0 (入口版)</p>
+        <p>v1.5.2 (修正版)</p>
       </header>
 
       <div class="controls">
@@ -289,6 +291,7 @@
 
       <div class="footer">
         💡 提示：設定 Google Sheet 連結後，即可在不同裝置間同步資料。
+        <div class="copyright">豐狂出品 • 紀錄每一步</div>
       </div>
     </div>
   </div>
@@ -531,7 +534,6 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
       if (!menu.contains(e.target) && !btn.contains(e.target)) { menu.classList.remove('show'); }
     });
 
-    /* --- VIEW SWITCHING --- */
     function showMainApp() {
         document.getElementById('landingPage').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
@@ -558,6 +560,12 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
         })
         .then(csvText => {
             parseCSVData(csvText);
+            // Fix: Reset filters so data is visible
+            document.getElementById("searchInput").value = "";
+            document.getElementById("runnerFilter").value = "";
+            document.getElementById("distanceFilter").value = "";
+            document.getElementById("yearFilter").value = "";
+            document.getElementById("monthFilter").value = "";
             alert("Demo 資料載入成功！");
             showMainApp();
         })
@@ -580,7 +588,6 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
                     else alert("JSON 格式錯誤");
                 } catch (err) { alert("JSON 解析失敗"); }
             } else {
-                // CSV
                 parseCSVData(content);
                 showMainApp();
             }
@@ -588,7 +595,6 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
         reader.readAsText(file);
     }
 
-    /* --- CORE LOGIC --- */
     function toggleSettings() { document.getElementById('settingsMenu').classList.toggle('show'); }
     function setMode(mode) {
       viewMode = mode;
@@ -796,6 +802,9 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
     }
     
     function parseCSVData(text) {
+       // FIX: Remove BOM if present (Crucial for Excel/GitHub CSVs)
+       if (text.charCodeAt(0) === 0xFEFF) { text = text.slice(1); }
+
        const rows = []; let quote = false; let col = 0, row = 0;
        for (let i = 0; i < text.length; i++) {
            const c = text[i], nc = text[i+1]; rows[row] = rows[row] || []; rows[row][col] = rows[row][col] || "";
