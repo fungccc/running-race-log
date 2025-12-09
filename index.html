@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>長跑比賽紀錄 - v1.8.0 (完整授權指引版)</title>
+  <title>個人長跑生涯紀錄 - v1.9.0 (雲端優化版)</title>
   <style>
     :root {
       --primary: #667eea;
@@ -14,6 +14,27 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif; background:var(--bg); padding:20px; color: var(--text); padding-bottom: 30px; }
     
+    /* --- LOADING OVERLAY (New in v1.9.0) --- */
+    .loading-overlay {
+      display: none; /* Hidden by default */
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 2000; /* Highest priority */
+      align-items: center; justify-content: center; flex-direction: column;
+    }
+    .loading-box {
+      text-align: center; background: #fff; padding: 30px; border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid #eee;
+    }
+    .spinner {
+      width: 40px; height: 40px; margin: 0 auto 15px;
+      border: 4px solid #f3f3f3; border-top: 4px solid var(--primary);
+      border-radius: 50%; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loading-text { font-size: 1.1em; color: var(--primary); font-weight: bold; margin-bottom: 5px; }
+    .loading-sub { font-size: 0.9em; color: #666; }
+
     /* --- GLOBAL COPYRIGHT --- */
     .global-copyright {
       position: fixed; bottom: 5px; left: 0; width: 100%; text-align: center;
@@ -24,12 +45,19 @@
     /* --- LANDING PAGE --- */
     #landingPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; text-align: center; max-width: 600px; margin: 0 auto; }
     .landing-card { background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); width: 100%; }
-    .landing-title { font-size: 2.5em; margin-bottom: 10px; color: var(--primary); }
+    .landing-title { font-size: 2.2em; margin-bottom: 10px; color: var(--primary); font-weight: bold; }
     .landing-desc { color: #666; margin-bottom: 30px; line-height: 1.6; }
+    
     .landing-btn { display: block; width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fff; font-size: 1.1em; cursor: pointer; transition: 0.2s; text-align: left; display: flex; align-items: center; gap: 15px; }
     .landing-btn:hover { background: #f8f9fa; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    
+    /* Cloud Button Style */
+    .landing-btn.cloud-load { background: linear-gradient(135deg, #4facfe, #00f2fe); color: #fff; border: none; display: none; /* Hidden by default */ }
+    .landing-btn.cloud-load:hover { opacity: 0.9; }
+
     .landing-btn.primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; }
     .landing-btn.primary:hover { opacity: 0.9; }
+    
     .icon-box { font-size: 1.5em; width: 40px; text-align: center; }
     .btn-text h4 { margin: 0; font-size: 1em; }
     .btn-text p { margin: 2px 0 0; font-size: 0.8em; opacity: 0.8; }
@@ -94,7 +122,10 @@
     
     .edit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
     .field-full-mobile { grid-column: span 1; }
-    .compact-zone { grid-column: span 2; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: end; }
+    .compact-zone {
+      grid-column: span 2; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: end;
+    }
     .form-group { margin-bottom: 5px; }
     .form-group label { font-size:0.85em; font-weight:bold; color: #555; margin-bottom:4px; display:block; }
     .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px 10px; border-radius:6px; border:1px solid #ccc; font-size:0.95em; font-family: inherit; }
@@ -114,22 +145,18 @@
     .delete-btn { background:#dc3545; color:#fff; margin-right: auto; }
     .success { background:#28a745; color:#fff; }
 
+    /* Footer */
     .footer { padding:10px 20px 15px; background:#f8f9fa; font-size:0.8em; color:#666; border-top:1px solid #e5e5e5; margin-top: auto;}
 
-    /* CLOUD MODAL STYLES (v1.8.0 Updated) */
+    /* Cloud Modal */
     .setup-guide { background: #fff8e1; border: 1px solid #ffe0b2; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 0.9em; }
     .setup-guide h4 { margin-top: 0; margin-bottom: 10px; color: #e65100; display: flex; align-items: center; gap: 5px; }
     .setup-guide ol { padding-left: 20px; margin: 0; color: #333; line-height: 1.6; }
     .setup-guide li { margin-bottom: 12px; }
-    
     .code-box { position: relative; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; }
     .code-box textarea { width: 100%; height: 80px; padding: 10px; font-family: monospace; font-size: 0.85em; border: none; background: #fafafa; color: #333; resize: vertical; }
     .copy-code-btn { position: absolute; top: 5px; right: 5px; padding: 4px 8px; background: #667eea; color: #fff; border: none; border-radius: 4px; font-size: 0.8em; cursor: pointer; opacity: 0.9; }
-    
-    .alert-box {
-      margin-top: 8px; padding: 10px; background: #fff; border-left: 4px solid #dc3545; color: #c00; font-weight: bold; font-size: 0.9em;
-    }
-
+    .alert-box { margin-top: 8px; padding: 10px; background: #fff; border-left: 4px solid #dc3545; color: #c00; font-weight: bold; font-size: 0.9em; }
     .cloud-input-section { margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 15px; }
     .cloud-status { padding: 10px; border-radius: 6px; background: #f1f3f5; margin-top: 10px; font-size: 0.9em; word-break: break-all; }
     .cloud-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
@@ -155,15 +182,29 @@
 </head>
 <body>
 
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div class="loading-text">☁️ 資料同步中...</div>
+      <div class="loading-sub">正在連線 Google Sheets，請稍候 5-20 秒</div>
+    </div>
+  </div>
+
   <div class="global-copyright">豐狂出品 • 紀錄每一步</div>
 
   <div id="landingPage">
     <div class="landing-card">
-      <div class="landing-title">🏃‍♂️ 長跑紀錄</div>
+      <div class="landing-title">個人長跑生涯紀錄</div>
       <p class="landing-desc">
         輕鬆管理您的馬拉松、半馬及各類長跑賽事紀錄。<br>
         支援 CSV 匯入匯出、多維度篩選與雲端備份。
       </p>
+      
+      <button id="btnLandingCloud" class="landing-btn cloud-load" onclick="syncCloud('restore', true)">
+        <div class="icon-box">☁️</div>
+        <div class="btn-text"><h4>從雲端讀取紀錄</h4><p>快速載入已儲存的 Google Sheet 資料</p></div>
+      </button>
+
       <button class="landing-btn primary" onclick="loadDemoFromUrl()">
         <div class="icon-box">🚀</div>
         <div class="btn-text"><h4>以 DEMO 檔作示範</h4><p>載入範例資料，快速體驗功能</p></div>
@@ -183,8 +224,8 @@
   <div id="mainApp">
     <div class="container">
       <header>
-        <h1>🏃‍♂️ 長跑比賽紀錄</h1>
-        <p>v1.8.0 (完整授權指引版)</p>
+        <h1>個人長跑生涯紀錄</h1>
+        <p>v1.9.0 (雲端優化版)</p>
       </header>
 
       <div class="controls">
@@ -236,13 +277,37 @@
   <input id="importCsvFile" type="file" accept=".csv,text/csv" style="display:none" onchange="importCSV(this.files[0])">
   <input id="landingImportFile" type="file" accept=".json,.csv,application/json,text/csv" style="display:none" onchange="handleLandingImport(this.files[0])">
 
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h2 id="modalTitle">編輯比賽記錄</h2><button class="close-btn" onclick="closeEditModal()">×</button></div>
+      <input id="f_編號" type="hidden">
+      <div class="edit-grid">
+        <div class="form-group field-full-mobile"><label>比賽名稱</label><input id="f_比賽名稱" type="text" list="list-cn-name" placeholder="例如：2024 臺北馬拉松"><datalist id="list-cn-name"></datalist></div>
+        <div class="form-group field-full-mobile"><label>Race Name</label><textarea id="f_RaceName" rows="2" placeholder="e.g. ASICS Hong Kong Half-Marathon Championship 2025"></textarea><datalist id="list-en-name"></datalist></div>
+        <div class="form-group"><label>比賽日期</label><input id="f_比賽日期" type="date"></div>
+        <div class="form-group"><label>地點</label><div style="position:relative;"><select id="f_地點_select" onchange="handleLocationChange(this)"></select><input id="f_地點_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入新地點"></div></div>
+        <div class="form-group"><label>主辦單位</label><div style="position:relative;"><select id="f_主辦單位_select" onchange="handleOrgChange(this)"></select><input id="f_主辦單位_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入主辦單位"></div></div>
+        <div class="form-group"><label>賽事組別</label><div style="position:relative;"><select id="f_賽事組別_select" onchange="handleCatChange(this)"></select><input id="f_賽事組別_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入賽事組別"></div></div>
+        <div class="form-group"><label>參賽者</label><div style="position:relative;"><select id="f_參賽者_select" onchange="handleRunnerChange(this)"></select><input id="f_參賽者_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入新參賽者姓名"></div></div>
+         <div class="form-group"><label>備註</label><div style="position:relative;"><select id="f_備註_select" onchange="handleNoteChange(this)"><option value="">(無)</option><option value="PB">PB (個人最佳)</option><option value="抽筋">抽筋</option><option value="天氣熱">天氣熱</option><option value="落雨">落雨</option><option value="順利完賽">順利完賽</option><option value="custom">➕ 自訂...</option></select><input id="f_備註_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入備註內容"></div></div>
+        <div class="compact-zone">
+          <div class="form-group compact-full-mobile"><label>距離</label><div style="position:relative;"><select id="f_距離_select" onchange="handleDistanceChange(this)"><option value="10 km">10 km</option><option value="21.0975 km">21.0975 km (半馬)</option><option value="42.195 km">42.195 km (全馬)</option><option value="custom">➕ 新增其他距離...</option></select><input id="f_距離_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入距離 (如 5 km)"></div></div>
+          <div class="form-group compact-full-mobile"><label>費用</label><div class="input-group"><select id="f_費用_幣種"><option value="港元$">港元$</option><option value="美元$">美元$</option><option value="日圓¥">日圓¥</option><option value="英鎊£">英鎊£</option><option value="歐元€">歐元€</option><option value="澳幣A$">澳幣A$</option><option value="">其他</option></select><input id="f_費用_金額" type="number" placeholder="金額"></div></div>
+          <div class="form-group compact-full-mobile"><label>起步時間</label><input id="f_起步時間" type="time"></div>
+          <div class="form-group compact-full-mobile"><label>完成時間 (時:分:秒)</label><div class="time-split-group"><input id="f_finish_h" type="number" min="0" max="999" placeholder="hh"><span class="time-colon">:</span><input id="f_finish_m" type="number" min="0" max="59" placeholder="mm"><span class="time-colon">:</span><input id="f_finish_s" type="number" min="0" max="59" placeholder="ss"></div></div>
+          <div class="form-group"><label>參賽編號</label><input id="f_參賽編號" type="text"></div>
+          <div class="form-group"><label>溫度(°C)</label><input id="f_溫度" type="number" step="0.1"></div>
+          <div class="form-group"><label>組別名次</label><input id="f_組別名次" type="number"></div>
+          <div class="form-group"><label>總名次</label><input id="f_總名次" type="number"></div>
+        </div>
+      </div>
+      <div class="modal-buttons"><button class="delete-btn" id="deleteBtn" onclick="deleteRace()">刪除此紀錄</button><button class="secondary" onclick="closeEditModal()">取消</button><button class="success" onclick="saveRace()">💾 保存變更</button></div>
+    </div>
+  </div>
+
   <div id="cloudModal" class="modal">
     <div class="modal-content" style="max-width: 650px;">
-      <div class="modal-header">
-        <h2>☁️ 雲端同步設定 (Google Sheets)</h2>
-        <button class="close-btn" onclick="closeCloudModal()">×</button>
-      </div>
-      
+      <div class="modal-header"><h2>☁️ 雲端同步設定 (Google Sheets)</h2><button class="close-btn" onclick="closeCloudModal()">×</button></div>
       <div class="setup-guide">
         <h4>⚙️ Google 端設定教學 (一次性)</h4>
         <ol>
@@ -282,60 +347,19 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
             </div>
           </li>
           <li>點擊右上角 <b>部署 > 新增部署 > 網頁應用程式</b>。<br>設定：執行身分=<b>我</b>，誰可以存取=<b>所有人</b> (重要!)。</li>
-          <li>點擊「部署」。<br>
-            <div class="alert-box">
-              ⚠️ 出現「Google hasn't verified this app」警告時：<br>
-              請點擊左下角 <b>Advanced (進階)</b> → 點擊最下方 <b>Go to ... (unsafe) (前往...不安全)</b> → 點擊 <b>Allow (允許)</b>。
-            </div>
-          </li>
+          <li>點擊「部署」。<br><div class="alert-box">⚠️ 出現「Google hasn't verified this app」警告時：<br>請點擊左下角 <b>Advanced (進階)</b> → 點擊最下方 <b>Go to ... (unsafe) (前往...不安全)</b> → 點擊 <b>Allow (允許)</b>。</div></li>
           <li>複製「網頁應用程式網址」並貼在下方欄位。</li>
         </ol>
       </div>
-
       <div class="cloud-input-section">
-        <div class="form-group">
-          <label>Google Apps Script 網址 (Web App URL)</label>
-          <input id="gasUrlInput" type="text" placeholder="https://script.google.com/macros/s/..../exec">
-        </div>
+        <div class="form-group"><label>Google Apps Script 網址 (Web App URL)</label><input id="gasUrlInput" type="text" placeholder="https://script.google.com/macros/s/..../exec"></div>
         <div class="cloud-status" id="cloudStatus">狀態：尚未連結。</div>
-        <div class="modal-buttons" style="margin-top:10px;">
-          <button class="secondary" onclick="closeCloudModal()">關閉</button>
-          <button class="success" onclick="saveGasUrl()">💾 儲存網址</button>
-        </div>
+        <div class="modal-buttons" style="margin-top:10px;"><button class="secondary" onclick="closeCloudModal()">關閉</button><button class="success" onclick="saveGasUrl()">💾 儲存網址</button></div>
       </div>
-
       <div class="cloud-actions">
         <div class="cloud-btn" onclick="syncCloud('backup')"><h3>⬆️ 備份到雲端</h3><p>將目前的網頁資料<br>覆蓋到 Google Sheet</p></div>
         <div class="cloud-btn" onclick="syncCloud('restore')"><h3>⬇️ 從雲端還原</h3><p>從 Google Sheet 下載<br>並覆蓋目前資料</p></div>
       </div>
-    </div>
-  </div>
-
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header"><h2 id="modalTitle">編輯比賽記錄</h2><button class="close-btn" onclick="closeEditModal()">×</button></div>
-      <input id="f_編號" type="hidden">
-      <div class="edit-grid">
-        <div class="form-group field-full-mobile"><label>比賽名稱</label><input id="f_比賽名稱" type="text" list="list-cn-name" placeholder="例如：2024 臺北馬拉松"><datalist id="list-cn-name"></datalist></div>
-        <div class="form-group field-full-mobile"><label>Race Name</label><textarea id="f_RaceName" rows="2" placeholder="e.g. ASICS Hong Kong Half-Marathon Championship 2025"></textarea><datalist id="list-en-name"></datalist></div>
-        <div class="form-group"><label>比賽日期</label><input id="f_比賽日期" type="date"></div>
-        <div class="form-group"><label>地點</label><div style="position:relative;"><select id="f_地點_select" onchange="handleLocationChange(this)"></select><input id="f_地點_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入新地點"></div></div>
-        <div class="form-group"><label>主辦單位</label><div style="position:relative;"><select id="f_主辦單位_select" onchange="handleOrgChange(this)"></select><input id="f_主辦單位_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入主辦單位"></div></div>
-        <div class="form-group"><label>賽事組別</label><div style="position:relative;"><select id="f_賽事組別_select" onchange="handleCatChange(this)"></select><input id="f_賽事組別_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入賽事組別"></div></div>
-        <div class="form-group"><label>參賽者</label><div style="position:relative;"><select id="f_參賽者_select" onchange="handleRunnerChange(this)"></select><input id="f_參賽者_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入新參賽者姓名"></div></div>
-         <div class="form-group"><label>備註</label><div style="position:relative;"><select id="f_備註_select" onchange="handleNoteChange(this)"><option value="">(無)</option><option value="PB">PB (個人最佳)</option><option value="抽筋">抽筋</option><option value="天氣熱">天氣熱</option><option value="落雨">落雨</option><option value="順利完賽">順利完賽</option><option value="custom">➕ 自訂...</option></select><input id="f_備註_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入備註內容"></div></div>
-        <div class="compact-zone">
-          <div class="form-group compact-full-mobile"><label>距離</label><div style="position:relative;"><select id="f_距離_select" onchange="handleDistanceChange(this)"><option value="10 km">10 km</option><option value="21.0975 km">21.0975 km (半馬)</option><option value="42.195 km">42.195 km (全馬)</option><option value="custom">➕ 新增其他距離...</option></select><input id="f_距離_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入距離 (如 5 km)"></div></div>
-          <div class="form-group compact-full-mobile"><label>費用</label><div class="input-group"><select id="f_費用_幣種"><option value="港元$">港元$</option><option value="美元$">美元$</option><option value="日圓¥">日圓¥</option><option value="英鎊£">英鎊£</option><option value="歐元€">歐元€</option><option value="澳幣A$">澳幣A$</option><option value="">其他</option></select><input id="f_費用_金額" type="number" placeholder="金額"></div></div>
-          <div class="form-group compact-full-mobile"><label>起步時間</label><input id="f_起步時間" type="time"></div>
-          <div class="form-group compact-full-mobile"><label>完成時間 (時:分:秒)</label><div class="time-split-group"><input id="f_finish_h" type="number" min="0" max="999" placeholder="hh"><span class="time-colon">:</span><input id="f_finish_m" type="number" min="0" max="59" placeholder="mm"><span class="time-colon">:</span><input id="f_finish_s" type="number" min="0" max="59" placeholder="ss"></div></div>
-          <div class="form-group"><label>參賽編號</label><input id="f_參賽編號" type="text"></div>
-          <div class="form-group"><label>溫度(°C)</label><input id="f_溫度" type="number" step="0.1"></div>
-          <div class="form-group"><label>組別名次</label><input id="f_組別名次" type="number"></div>
-          <div class="form-group"><label>總名次</label><input id="f_總名次" type="number"></div>
-        </div>
-      </div>
-      <div class="modal-buttons"><button class="delete-btn" id="deleteBtn" onclick="deleteRace()">刪除此紀錄</button><button class="secondary" onclick="closeEditModal()">取消</button><button class="success" onclick="saveRace()">💾 保存變更</button></div>
     </div>
   </div>
 
@@ -353,6 +377,7 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
            document.getElementById('gasUrlInput').value = savedUrl;
            document.getElementById('cloudStatus').textContent = "✅ 已連結： " + savedUrl.substring(0, 30) + "...";
            document.getElementById('cloudStatus').style.color = "green";
+           document.getElementById('btnLandingCloud').style.display = "flex"; // Show cloud button if url exists
         }
     });
 
@@ -361,8 +386,19 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
       if (!menu.contains(e.target) && !btn.contains(e.target)) { menu.classList.remove('show'); }
     });
 
-    function showMainApp() { document.getElementById('landingPage').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; renderHeaders(); refreshData(); }
-    function showLanding() { document.getElementById('mainApp').style.display = 'none'; document.getElementById('landingPage').style.display = 'flex'; document.getElementById('settingsMenu').classList.remove('show'); }
+    function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
+    function hideLoading() { document.getElementById('loadingOverlay').style.display = 'none'; }
+
+    function showMainApp() {
+        document.getElementById('landingPage').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        renderHeaders(); refreshData();
+    }
+    function showLanding() {
+        document.getElementById('mainApp').style.display = 'none';
+        document.getElementById('landingPage').style.display = 'flex';
+        document.getElementById('settingsMenu').classList.remove('show');
+    }
     function enterAppEmpty() { racesData = []; showMainApp(); }
     function loadDemoFromUrl() {
         if(!confirm("確定要載入 Demo 資料嗎？")) return;
@@ -381,7 +417,12 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
     }
 
     function toggleSettings() { document.getElementById('settingsMenu').classList.toggle('show'); }
-    function setMode(mode) { viewMode = mode; document.getElementById('btnModeSimple').className = mode === 'simple' ? 'view-mode-btn active' : 'view-mode-btn'; document.getElementById('btnModeDetail').className = mode === 'detail' ? 'view-mode-btn active' : 'view-mode-btn'; renderHeaders(); renderTable(filtered); }
+    function setMode(mode) {
+      viewMode = mode;
+      document.getElementById('btnModeSimple').className = mode === 'simple' ? 'view-mode-btn active' : 'view-mode-btn';
+      document.getElementById('btnModeDetail').className = mode === 'detail' ? 'view-mode-btn active' : 'view-mode-btn';
+      renderHeaders(); renderTable(filtered);
+    }
     function renderHeaders() {
       const thead = document.getElementById('tableHead'); const columns = viewMode === 'simple' ? COLUMNS_SIMPLE : COLUMNS_DETAIL;
       let html = '<tr>'; columns.forEach(col => { let sortMark = '↕'; if (sortField === col) sortMark = sortDir === 'asc' ? '↑' : '↓'; html += `<th onclick="changeSort('${col}')">${col}<span class="sort-indicator">${sortMark}</span></th>`; }); html += '<th>操作</th></tr>'; thead.innerHTML = html;
@@ -447,6 +488,7 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
       }).join(""); tbody.innerHTML = rowsHtml;
     }
 
+    // Modal Logic
     function handleDistanceChange(select) { const i = document.getElementById("f_距離_input"); if (select.value === "custom") { select.style.display = "none"; i.style.display = "block"; i.value = ""; i.focus(); } else { i.style.display = "none"; } }
     function handleRunnerChange(select) { const i = document.getElementById("f_參賽者_input"); if (select.value === "custom") { select.style.display = "none"; i.style.display = "block"; i.value = ""; i.focus(); } else { i.style.display = "none"; } }
     function handleNoteChange(select) { const i = document.getElementById("f_備註_input"); if (select.value === "custom") { select.style.display = "none"; i.style.display = "block"; i.value = ""; i.focus(); } else { i.style.display = "none"; } }
@@ -508,8 +550,54 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
     function openCloudModal() { document.getElementById('settingsMenu').classList.remove('show'); document.getElementById('cloudModal').classList.add('show'); }
     function closeCloudModal() { document.getElementById('cloudModal').classList.remove('show'); }
     function copyGasCode() { const c = document.getElementById('gasCodeSource').value; navigator.clipboard.writeText(c).then(() => { alert("代碼已複製"); }); }
-    function saveGasUrl() { const u = document.getElementById('gasUrlInput').value.trim(); if(!u) { alert("網址不能為空"); return; } localStorage.setItem('gasUrl', u); document.getElementById('cloudStatus').textContent = "✅ 已連結"; document.getElementById('cloudStatus').style.color = "green"; }
-    function syncCloud(action) { const url = localStorage.getItem('gasUrl'); if(!url) { alert("請先設定網址"); return; } const s = document.getElementById('cloudStatus'); s.textContent = (action === 'backup') ? "備份中..." : "還原中..."; if(action === 'backup') { fetch(url, { method: 'POST', body: JSON.stringify(racesData) }).then(r=>r.json()).then(d=>{ if(d.status==='success') { alert("備份成功"); s.textContent="✅ 備份成功"; s.style.color="green"; } else throw new Error(d.message); }).catch(e=>{ alert("失敗:"+e); s.textContent="❌ 失敗"; s.style.color="red"; }); } else { if(!confirm("確定還原？")) return; fetch(url).then(r=>r.json()).then(d=>{ if(Array.isArray(d)) { racesData = d; refreshData(); alert("還原成功"); s.textContent="✅ 還原成功"; s.style.color="green"; closeCloudModal(); } }).catch(e=>{ alert("失敗:"+e); s.textContent="❌ 失敗"; s.style.color="red"; }); } }
+    function saveGasUrl() { const u = document.getElementById('gasUrlInput').value.trim(); if(!u) { alert("網址不能為空"); return; } localStorage.setItem('gasUrl', u); document.getElementById('cloudStatus').textContent = "✅ 已連結"; document.getElementById('cloudStatus').style.color = "green"; document.getElementById('btnLandingCloud').style.display = "flex"; }
+    
+    // FIX: Date/Time sanitizer
+    function sanitizeCloudData(data) {
+        return data.map(r => {
+            // Fix Date: 2024-12-01T00:00:00.000Z -> 2024-12-01
+            if(r["比賽日期"] && r["比賽日期"].includes("T")) {
+                r["比賽日期"] = r["比賽日期"].split("T")[0];
+            }
+            // Fix Time: 1899-12-30T06:30:00.000Z -> 06:30
+            if(r["起步時間"] && r["起步時間"].includes("T")) {
+                let d = new Date(r["起步時間"]);
+                if(!isNaN(d.getTime())) {
+                    let hh = String(d.getUTCHours()).padStart(2,'0'); // Use UTC to avoid timezone shift from Apps Script default
+                    let mm = String(d.getUTCMinutes()).padStart(2,'0');
+                    r["起步時間"] = `${hh}:${mm}`;
+                }
+            }
+            return r;
+        });
+    }
+
+    function syncCloud(action, isLanding=false) {
+        const url = localStorage.getItem('gasUrl'); 
+        if(!url) { alert("請先設定網址"); return; }
+        
+        showLoading(); // Show overlay
+        
+        if(action === 'backup') {
+            fetch(url, { method: 'POST', body: JSON.stringify(racesData) })
+            .then(r=>r.json()).then(d=>{ 
+                hideLoading();
+                if(d.status==='success') { alert("備份成功"); document.getElementById('cloudStatus').textContent="✅ 備份成功"; } 
+                else throw new Error(d.message); 
+            }).catch(e=>{ hideLoading(); alert("失敗:"+e); });
+        } else {
+            if(!isLanding && !confirm("確定還原？")) { hideLoading(); return; }
+            fetch(url).then(r=>r.json()).then(d=>{ 
+                hideLoading();
+                if(Array.isArray(d)) { 
+                    racesData = sanitizeCloudData(d); // Fix Date/Time
+                    refreshData(); 
+                    if(isLanding) { showMainApp(); } 
+                    else { alert("還原成功"); document.getElementById('cloudStatus').textContent="✅ 還原成功"; closeCloudModal(); }
+                } 
+            }).catch(e=>{ hideLoading(); alert("失敗:"+e); });
+        }
+    }
   </script>
 </body>
 </html>
