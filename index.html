@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>長跑比賽紀錄 - v1.7.1 (完美署名版)</title>
+  <title>長跑比賽紀錄 - v1.8.0 (完整授權指引版)</title>
   <style>
     :root {
       --primary: #667eea;
@@ -12,23 +12,13 @@
       --border: #ccc;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif; background:var(--bg); padding:20px; color: var(--text); padding-bottom: 30px; /* Space for footer */ }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif; background:var(--bg); padding:20px; color: var(--text); padding-bottom: 30px; }
     
-    /* --- GLOBAL COPYRIGHT (FIXED FOOTER) v1.7.1 --- */
+    /* --- GLOBAL COPYRIGHT --- */
     .global-copyright {
-      position: fixed;
-      bottom: 5px;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      color: #b0b0b0; /* 極淡灰色 */
-      font-size: 0.75em; /* 極細字 */
-      font-weight: 300;
-      letter-spacing: 1px;
-      z-index: 50; /* 低於 Modal (1000) 和 Menu (100) */
-      pointer-events: none; /* 關鍵：點擊穿透，不阻擋操作 */
-      user-select: none;
-      font-family: "Microsoft JhengHei", sans-serif;
+      position: fixed; bottom: 5px; left: 0; width: 100%; text-align: center;
+      color: #b0b0b0; font-size: 0.75em; font-weight: 300; letter-spacing: 1px;
+      z-index: 50; pointer-events: none; user-select: none; font-family: "Microsoft JhengHei", sans-serif;
     }
 
     /* --- LANDING PAGE --- */
@@ -102,18 +92,12 @@
     .modal-header h2 { font-size:1.4em; color: #333; }
     .close-btn { font-size:2em; line-height: 1; color: #999; background: none; }
     
-    /* Edit Modal Layout */
     .edit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
     .field-full-mobile { grid-column: span 1; }
-    .compact-zone {
-      grid-column: span 2; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px;
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: end;
-    }
+    .compact-zone { grid-column: span 2; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: end; }
     .form-group { margin-bottom: 5px; }
     .form-group label { font-size:0.85em; font-weight:bold; color: #555; margin-bottom:4px; display:block; }
-    .form-group input, .form-group select, .form-group textarea { 
-      width:100%; padding:8px 10px; border-radius:6px; border:1px solid #ccc; font-size:0.95em; font-family: inherit;
-    }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px 10px; border-radius:6px; border:1px solid #ccc; font-size:0.95em; font-family: inherit; }
     .form-group textarea { resize: vertical; min-height: 38px; }
     .form-group input[type="date"] { padding: 7px 10px; height: 38px; }
     .input-group { display: flex; gap: 0; }
@@ -130,19 +114,21 @@
     .delete-btn { background:#dc3545; color:#fff; margin-right: auto; }
     .success { background:#28a745; color:#fff; }
 
-    /* Footer */
     .footer { padding:10px 20px 15px; background:#f8f9fa; font-size:0.8em; color:#666; border-top:1px solid #e5e5e5; margin-top: auto;}
 
-    /* Cloud Modal */
+    /* CLOUD MODAL STYLES (v1.8.0 Updated) */
     .setup-guide { background: #fff8e1; border: 1px solid #ffe0b2; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 0.9em; }
     .setup-guide h4 { margin-top: 0; margin-bottom: 10px; color: #e65100; display: flex; align-items: center; gap: 5px; }
     .setup-guide ol { padding-left: 20px; margin: 0; color: #333; line-height: 1.6; }
-    .setup-guide li { margin-bottom: 8px; }
+    .setup-guide li { margin-bottom: 12px; }
     
     .code-box { position: relative; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; }
-    .code-box textarea { width: 100%; height: 100px; padding: 10px; font-family: monospace; font-size: 0.85em; border: none; background: #fafafa; color: #333; resize: vertical; }
+    .code-box textarea { width: 100%; height: 80px; padding: 10px; font-family: monospace; font-size: 0.85em; border: none; background: #fafafa; color: #333; resize: vertical; }
     .copy-code-btn { position: absolute; top: 5px; right: 5px; padding: 4px 8px; background: #667eea; color: #fff; border: none; border-radius: 4px; font-size: 0.8em; cursor: pointer; opacity: 0.9; }
-    .copy-code-btn:hover { opacity: 1; }
+    
+    .alert-box {
+      margin-top: 8px; padding: 10px; background: #fff; border-left: 4px solid #dc3545; color: #c00; font-weight: bold; font-size: 0.9em;
+    }
 
     .cloud-input-section { margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 15px; }
     .cloud-status { padding: 10px; border-radius: 6px; background: #f1f3f5; margin-top: 10px; font-size: 0.9em; word-break: break-all; }
@@ -153,10 +139,9 @@
     .cloud-btn p { font-size: 0.85em; color: #666; margin: 0; }
     
     @media (max-width: 768px) {
-      body { padding: 20px 10px 40px 10px; } /* Bottom padding for fixed footer */
+      body { padding: 20px 10px 40px 10px; }
       .container { border-radius: 0; min-height: 100vh; }
       .controls { gap: 8px; }
-      .control-row-filters { gap: 5px; }
       .filter-select { flex: 1 1 30%; min-width: 70px; font-size: 0.85em; padding: 8px 4px; }
       #runnerFilter { flex: 1 1 100%; width: 100%; min-width: 100%; order: -1; }
       .modal-content { width: 100%; height: 100%; max-height: 100vh; border-radius: 0; padding: 15px; }
@@ -199,7 +184,7 @@
     <div class="container">
       <header>
         <h1>🏃‍♂️ 長跑比賽紀錄</h1>
-        <p>v1.7.1 (完美署名版)</p>
+        <p>v1.8.0 (完整授權指引版)</p>
       </header>
 
       <div class="controls">
@@ -226,180 +211,30 @@
         </div>
 
         <div class="control-row-filters">
-          <select id="runnerFilter" class="filter-select" onchange="applyFilters()">
-            <option value="">👤 參賽者</option>
-          </select>
-          <select id="distanceFilter" class="filter-select" onchange="applyFilters()">
-            <option value="">📏 距離</option>
-          </select>
-          <select id="yearFilter" class="filter-select" onchange="applyFilters()">
-            <option value="">📅 年份</option>
-          </select>
-          <select id="monthFilter" class="filter-select" onchange="applyFilters()">
-            <option value="">🌙 月份</option>
-          </select>
-
+          <select id="runnerFilter" class="filter-select" onchange="applyFilters()"><option value="">👤 參賽者</option></select>
+          <select id="distanceFilter" class="filter-select" onchange="applyFilters()"><option value="">📏 距離</option></select>
+          <select id="yearFilter" class="filter-select" onchange="applyFilters()"><option value="">📅 年份</option></select>
+          <select id="monthFilter" class="filter-select" onchange="applyFilters()"><option value="">🌙 月份</option></select>
           <div class="view-mode-group">
             <button class="view-mode-btn active" id="btnModeSimple" onclick="setMode('simple')">精簡</button>
             <button class="view-mode-btn" id="btnModeDetail" onclick="setMode('detail')">詳細</button>
           </div>
-          
           <button class="reset-btn" onclick="resetFilters()" title="重置篩選">🔄</button>
         </div>
       </div>
 
       <div class="table-wrapper">
-        <table id="raceTable">
-          <thead id="tableHead"></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-        <div id="noResults" class="no-results" style="display:none; text-align:center; padding:30px; color:#777;">
-          沒有符合條件的比賽資料。
-        </div>
+        <table id="raceTable"><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table>
+        <div id="noResults" class="no-results" style="display:none; text-align:center; padding:30px; color:#777;">沒有符合條件的比賽資料。</div>
       </div>
 
-      <div class="footer">
-        💡 提示：設定 Google Sheet 連結後，即可在不同裝置間同步資料。
-      </div>
+      <div class="footer">💡 提示：設定 Google Sheet 連結後，即可在不同裝置間同步資料。</div>
     </div>
   </div>
 
   <input id="importJsonFile" type="file" accept=".json,application/json" style="display:none" onchange="importJSON(this.files[0])">
   <input id="importCsvFile" type="file" accept=".csv,text/csv" style="display:none" onchange="importCSV(this.files[0])">
   <input id="landingImportFile" type="file" accept=".json,.csv,application/json,text/csv" style="display:none" onchange="handleLandingImport(this.files[0])">
-
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modalTitle">編輯比賽記錄</h2>
-        <button class="close-btn" onclick="closeEditModal()">×</button>
-      </div>
-      <input id="f_編號" type="hidden">
-      <div class="edit-grid">
-        <div class="form-group field-full-mobile">
-          <label>比賽名稱</label>
-          <input id="f_比賽名稱" type="text" list="list-cn-name" placeholder="例如：2024 臺北馬拉松">
-          <datalist id="list-cn-name"></datalist>
-        </div>
-        <div class="form-group field-full-mobile">
-          <label>Race Name</label>
-          <textarea id="f_RaceName" rows="2" placeholder="e.g. ASICS Hong Kong Half-Marathon Championship 2025"></textarea>
-          <datalist id="list-en-name"></datalist>
-        </div>
-        <div class="form-group">
-          <label>比賽日期</label>
-          <input id="f_比賽日期" type="date">
-        </div>
-        <div class="form-group">
-          <label>地點</label>
-          <div style="position:relative;">
-             <select id="f_地點_select" onchange="handleLocationChange(this)"></select>
-             <input id="f_地點_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入新地點">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>主辦單位</label>
-          <div style="position:relative;">
-             <select id="f_主辦單位_select" onchange="handleOrgChange(this)"></select>
-             <input id="f_主辦單位_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入主辦單位">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>賽事組別</label>
-          <div style="position:relative;">
-             <select id="f_賽事組別_select" onchange="handleCatChange(this)"></select>
-             <input id="f_賽事組別_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入賽事組別">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>參賽者</label>
-          <div style="position:relative;">
-             <select id="f_參賽者_select" onchange="handleRunnerChange(this)"></select>
-             <input id="f_參賽者_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入新參賽者姓名">
-          </div>
-        </div>
-         <div class="form-group">
-          <label>備註</label>
-          <div style="position:relative;">
-             <select id="f_備註_select" onchange="handleNoteChange(this)">
-                <option value="">(無)</option>
-                <option value="PB">PB (個人最佳)</option>
-                <option value="抽筋">抽筋</option>
-                <option value="天氣熱">天氣熱</option>
-                <option value="落雨">落雨</option>
-                <option value="順利完賽">順利完賽</option>
-                <option value="custom">➕ 自訂...</option>
-             </select>
-             <input id="f_備註_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入備註內容">
-          </div>
-        </div>
-        <div class="compact-zone">
-          <div class="form-group compact-full-mobile">
-            <label>距離</label>
-            <div style="position:relative;">
-              <select id="f_距離_select" onchange="handleDistanceChange(this)">
-                <option value="10 km">10 km</option>
-                <option value="21.0975 km">21.0975 km (半馬)</option>
-                <option value="42.195 km">42.195 km (全馬)</option>
-                <option value="custom">➕ 新增其他距離...</option>
-              </select>
-              <input id="f_距離_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入距離 (如 5 km)">
-            </div>
-          </div>
-          <div class="form-group compact-full-mobile">
-            <label>費用</label>
-            <div class="input-group">
-              <select id="f_費用_幣種">
-                <option value="港元$">港元$</option>
-                <option value="美元$">美元$</option>
-                <option value="日圓¥">日圓¥</option>
-                <option value="英鎊£">英鎊£</option>
-                <option value="歐元€">歐元€</option>
-                <option value="澳幣A$">澳幣A$</option>
-                <option value="">其他</option>
-              </select>
-              <input id="f_費用_金額" type="number" placeholder="金額">
-            </div>
-          </div>
-          <div class="form-group compact-full-mobile">
-            <label>起步時間</label>
-            <input id="f_起步時間" type="time">
-          </div>
-          <div class="form-group compact-full-mobile">
-            <label>完成時間 (時:分:秒)</label>
-            <div class="time-split-group">
-              <input id="f_finish_h" type="number" min="0" max="999" placeholder="hh">
-              <span class="time-colon">:</span>
-              <input id="f_finish_m" type="number" min="0" max="59" placeholder="mm">
-              <span class="time-colon">:</span>
-              <input id="f_finish_s" type="number" min="0" max="59" placeholder="ss">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>參賽編號</label>
-            <input id="f_參賽編號" type="text">
-          </div>
-          <div class="form-group">
-            <label>溫度(°C)</label>
-            <input id="f_溫度" type="number" step="0.1">
-          </div>
-          <div class="form-group">
-            <label>組別名次</label>
-            <input id="f_組別名次" type="number">
-          </div>
-          <div class="form-group">
-            <label>總名次</label>
-            <input id="f_總名次" type="number">
-          </div>
-        </div>
-      </div>
-      <div class="modal-buttons">
-        <button class="delete-btn" id="deleteBtn" onclick="deleteRace()">刪除此紀錄</button>
-        <button class="secondary" onclick="closeEditModal()">取消</button>
-        <button class="success" onclick="saveRace()">💾 保存變更</button>
-      </div>
-    </div>
-  </div>
 
   <div id="cloudModal" class="modal">
     <div class="modal-content" style="max-width: 650px;">
@@ -409,14 +244,11 @@
       </div>
       
       <div class="setup-guide">
-        <h4>⚙️ Google 端設定教學 (僅需一次)</h4>
+        <h4>⚙️ Google 端設定教學 (一次性)</h4>
         <ol>
-          <li>
-            <a href="https://docs.google.com/spreadsheets/create?hl=zh-TW" target="_blank" style="color:#667eea; font-weight:bold; text-decoration:underline;">點此建立空白 Google 試算表</a>
-            <br>建議命名：<b>RunningLog_Backup</b>
-          </li>
-          <li>點擊上方 <b>擴充功能 > Apps Script</b>。</li>
-          <li>清除內容，貼上以下代碼：
+          <li><b style="color:#d32f2f;">【請使用電腦操作步驟 1-5】</b> <a href="https://docs.google.com/spreadsheets/create?hl=zh-TW" target="_blank" style="color:#667eea; font-weight:bold; text-decoration:underline;">點此建立空白 Google 試算表</a>。<br>建議命名：<b>RunningLog_Backup</b></li>
+          <li>點擊上方選單 <b>擴充功能 > Apps Script</b>。<br>建議上方專案命名為：<b>RunningLog_API</b></li>
+          <li>刪除編輯器內所有文字，複製下方代碼並貼上：
             <div class="code-box">
               <button class="copy-code-btn" onclick="copyGasCode()">📋 複製代碼</button>
               <textarea id="gasCodeSource" readonly>
@@ -449,8 +281,13 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
               </textarea>
             </div>
           </li>
-          <li>點擊 <b>部署 > 新增部署 > 網頁應用程式</b>。</li>
-          <li>設定：執行身分=<b>我</b>，誰可以存取=<b>所有人</b> (重要!)。</li>
+          <li>點擊右上角 <b>部署 > 新增部署 > 網頁應用程式</b>。<br>設定：執行身分=<b>我</b>，誰可以存取=<b>所有人</b> (重要!)。</li>
+          <li>點擊「部署」。<br>
+            <div class="alert-box">
+              ⚠️ 出現「Google hasn't verified this app」警告時：<br>
+              請點擊左下角 <b>Advanced (進階)</b> → 點擊最下方 <b>Go to ... (unsafe) (前往...不安全)</b> → 點擊 <b>Allow (允許)</b>。
+            </div>
+          </li>
           <li>複製「網頁應用程式網址」並貼在下方欄位。</li>
         </ol>
       </div>
@@ -460,7 +297,7 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
           <label>Google Apps Script 網址 (Web App URL)</label>
           <input id="gasUrlInput" type="text" placeholder="https://script.google.com/macros/s/..../exec">
         </div>
-        <div class="cloud-status" id="cloudStatus">狀態：尚未連結。請輸入網址並點擊儲存。</div>
+        <div class="cloud-status" id="cloudStatus">狀態：尚未連結。</div>
         <div class="modal-buttons" style="margin-top:10px;">
           <button class="secondary" onclick="closeCloudModal()">關閉</button>
           <button class="success" onclick="saveGasUrl()">💾 儲存網址</button>
@@ -468,9 +305,37 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
       </div>
 
       <div class="cloud-actions">
-        <div class="cloud-btn" onclick="syncCloud('backup')"><h3>⬆️ 備份到雲端</h3><p>將網頁資料覆蓋到 Sheet</p></div>
-        <div class="cloud-btn" onclick="syncCloud('restore')"><h3>⬇️ 從雲端還原</h3><p>從 Sheet 下載並覆蓋資料</p></div>
+        <div class="cloud-btn" onclick="syncCloud('backup')"><h3>⬆️ 備份到雲端</h3><p>將目前的網頁資料<br>覆蓋到 Google Sheet</p></div>
+        <div class="cloud-btn" onclick="syncCloud('restore')"><h3>⬇️ 從雲端還原</h3><p>從 Google Sheet 下載<br>並覆蓋目前資料</p></div>
       </div>
+    </div>
+  </div>
+
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h2 id="modalTitle">編輯比賽記錄</h2><button class="close-btn" onclick="closeEditModal()">×</button></div>
+      <input id="f_編號" type="hidden">
+      <div class="edit-grid">
+        <div class="form-group field-full-mobile"><label>比賽名稱</label><input id="f_比賽名稱" type="text" list="list-cn-name" placeholder="例如：2024 臺北馬拉松"><datalist id="list-cn-name"></datalist></div>
+        <div class="form-group field-full-mobile"><label>Race Name</label><textarea id="f_RaceName" rows="2" placeholder="e.g. ASICS Hong Kong Half-Marathon Championship 2025"></textarea><datalist id="list-en-name"></datalist></div>
+        <div class="form-group"><label>比賽日期</label><input id="f_比賽日期" type="date"></div>
+        <div class="form-group"><label>地點</label><div style="position:relative;"><select id="f_地點_select" onchange="handleLocationChange(this)"></select><input id="f_地點_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入新地點"></div></div>
+        <div class="form-group"><label>主辦單位</label><div style="position:relative;"><select id="f_主辦單位_select" onchange="handleOrgChange(this)"></select><input id="f_主辦單位_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入主辦單位"></div></div>
+        <div class="form-group"><label>賽事組別</label><div style="position:relative;"><select id="f_賽事組別_select" onchange="handleCatChange(this)"></select><input id="f_賽事組別_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入賽事組別"></div></div>
+        <div class="form-group"><label>參賽者</label><div style="position:relative;"><select id="f_參賽者_select" onchange="handleRunnerChange(this)"></select><input id="f_參賽者_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入新參賽者姓名"></div></div>
+         <div class="form-group"><label>備註</label><div style="position:relative;"><select id="f_備註_select" onchange="handleNoteChange(this)"><option value="">(無)</option><option value="PB">PB (個人最佳)</option><option value="抽筋">抽筋</option><option value="天氣熱">天氣熱</option><option value="落雨">落雨</option><option value="順利完賽">順利完賽</option><option value="custom">➕ 自訂...</option></select><input id="f_備註_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入備註內容"></div></div>
+        <div class="compact-zone">
+          <div class="form-group compact-full-mobile"><label>距離</label><div style="position:relative;"><select id="f_距離_select" onchange="handleDistanceChange(this)"><option value="10 km">10 km</option><option value="21.0975 km">21.0975 km (半馬)</option><option value="42.195 km">42.195 km (全馬)</option><option value="custom">➕ 新增其他距離...</option></select><input id="f_距離_input" type="text" style="display:none; margin-top:5px;" placeholder="輸入距離 (如 5 km)"></div></div>
+          <div class="form-group compact-full-mobile"><label>費用</label><div class="input-group"><select id="f_費用_幣種"><option value="港元$">港元$</option><option value="美元$">美元$</option><option value="日圓¥">日圓¥</option><option value="英鎊£">英鎊£</option><option value="歐元€">歐元€</option><option value="澳幣A$">澳幣A$</option><option value="">其他</option></select><input id="f_費用_金額" type="number" placeholder="金額"></div></div>
+          <div class="form-group compact-full-mobile"><label>起步時間</label><input id="f_起步時間" type="time"></div>
+          <div class="form-group compact-full-mobile"><label>完成時間 (時:分:秒)</label><div class="time-split-group"><input id="f_finish_h" type="number" min="0" max="999" placeholder="hh"><span class="time-colon">:</span><input id="f_finish_m" type="number" min="0" max="59" placeholder="mm"><span class="time-colon">:</span><input id="f_finish_s" type="number" min="0" max="59" placeholder="ss"></div></div>
+          <div class="form-group"><label>參賽編號</label><input id="f_參賽編號" type="text"></div>
+          <div class="form-group"><label>溫度(°C)</label><input id="f_溫度" type="number" step="0.1"></div>
+          <div class="form-group"><label>組別名次</label><input id="f_組別名次" type="number"></div>
+          <div class="form-group"><label>總名次</label><input id="f_總名次" type="number"></div>
+        </div>
+      </div>
+      <div class="modal-buttons"><button class="delete-btn" id="deleteBtn" onclick="deleteRace()">刪除此紀錄</button><button class="secondary" onclick="closeEditModal()">取消</button><button class="success" onclick="saveRace()">💾 保存變更</button></div>
     </div>
   </div>
 
@@ -480,12 +345,7 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
     const COLUMNS_DETAIL = ["編號", "比賽日期", "比賽名稱", "Race Name", "地點", "距離", "費用", "起步時間", "完成時間", "參賽者", "賽事組別", "參賽編號", "組別名次", "總名次", "溫度", "備註"];
     const DEMO_URL = "https://fungccc.github.io/running-race-log/demo/demo_rrlog.csv";
 
-    let racesData = [];
-    let filtered = [];
-    let currentIndex = -1;
-    let viewMode = 'simple';
-    let sortField = "比賽日期";
-    let sortDir = "desc";
+    let racesData = []; let filtered = []; let currentIndex = -1; let viewMode = 'simple'; let sortField = "比賽日期"; let sortDir = "desc";
 
     document.addEventListener('DOMContentLoaded', () => {
         const savedUrl = localStorage.getItem('gasUrl');
@@ -497,221 +357,94 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
     });
 
     document.addEventListener('click', function(e) {
-      const menu = document.getElementById('settingsMenu');
-      const btn = document.querySelector('.settings-btn');
+      const menu = document.getElementById('settingsMenu'); const btn = document.querySelector('.settings-btn');
       if (!menu.contains(e.target) && !btn.contains(e.target)) { menu.classList.remove('show'); }
     });
 
-    function showMainApp() {
-        document.getElementById('landingPage').style.display = 'none';
-        document.getElementById('mainApp').style.display = 'block';
-        renderHeaders(); refreshData();
-    }
-    
-    function showLanding() {
-        document.getElementById('mainApp').style.display = 'none';
-        document.getElementById('landingPage').style.display = 'flex';
-        document.getElementById('settingsMenu').classList.remove('show');
-    }
-
+    function showMainApp() { document.getElementById('landingPage').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; renderHeaders(); refreshData(); }
+    function showLanding() { document.getElementById('mainApp').style.display = 'none'; document.getElementById('landingPage').style.display = 'flex'; document.getElementById('settingsMenu').classList.remove('show'); }
     function enterAppEmpty() { racesData = []; showMainApp(); }
-
     function loadDemoFromUrl() {
-        if(!confirm("確定要載入 Demo 資料嗎？這將會覆蓋您目前的暫存資料。")) return;
-        fetch(DEMO_URL)
-        .then(response => { if (!response.ok) throw new Error("Network response was not ok"); return response.text(); })
-        .then(csvText => {
-            parseCSVData(csvText);
-            document.getElementById("searchInput").value = "";
-            document.getElementById("runnerFilter").value = "";
-            document.getElementById("distanceFilter").value = "";
-            document.getElementById("yearFilter").value = "";
-            document.getElementById("monthFilter").value = "";
-            alert("Demo 資料載入成功！");
-            showMainApp();
-        })
-        .catch(error => { alert("載入 Demo 失敗：" + error.message); });
+        if(!confirm("確定要載入 Demo 資料嗎？")) return;
+        fetch(DEMO_URL).then(r => { if(!r.ok)throw new Error("Net err"); return r.text(); })
+        .then(csv => { parseCSVData(csv); resetFilters(); alert("Demo 資料載入成功！"); showMainApp(); })
+        .catch(e => alert("載入失敗: "+e.message));
     }
-    
     function triggerLandingImport() { document.getElementById("landingImportFile").click(); }
     function handleLandingImport(file) {
-        if(!file) return;
-        const reader = new FileReader();
+        if(!file) return; const reader = new FileReader();
         reader.onload = e => {
-            const content = e.target.result;
-            if (file.name.endsWith('.json')) {
-                try {
-                    const data = JSON.parse(content);
-                    if (Array.isArray(data)) { racesData = data; showMainApp(); }
-                    else alert("JSON 格式錯誤");
-                } catch (err) { alert("JSON 解析失敗"); }
-            } else { parseCSVData(content); showMainApp(); }
-        };
-        reader.readAsText(file);
+            const c = e.target.result;
+            if (file.name.endsWith('.json')) { try { const d=JSON.parse(c); if(Array.isArray(d)){racesData=d;showMainApp();}else alert("格式錯誤"); } catch(e){alert("JSON 錯誤");} } 
+            else { parseCSVData(c); showMainApp(); }
+        }; reader.readAsText(file);
     }
 
     function toggleSettings() { document.getElementById('settingsMenu').classList.toggle('show'); }
-    function setMode(mode) {
-      viewMode = mode;
-      document.getElementById('btnModeSimple').className = mode === 'simple' ? 'view-mode-btn active' : 'view-mode-btn';
-      document.getElementById('btnModeDetail').className = mode === 'detail' ? 'view-mode-btn active' : 'view-mode-btn';
-      renderHeaders(); renderTable(filtered);
-    }
-
+    function setMode(mode) { viewMode = mode; document.getElementById('btnModeSimple').className = mode === 'simple' ? 'view-mode-btn active' : 'view-mode-btn'; document.getElementById('btnModeDetail').className = mode === 'detail' ? 'view-mode-btn active' : 'view-mode-btn'; renderHeaders(); renderTable(filtered); }
     function renderHeaders() {
-      const thead = document.getElementById('tableHead');
-      const columns = viewMode === 'simple' ? COLUMNS_SIMPLE : COLUMNS_DETAIL;
-      let html = '<tr>';
-      columns.forEach(col => {
-        let sortMark = '↕';
-        if (sortField === col) sortMark = sortDir === 'asc' ? '↑' : '↓';
-        html += `<th onclick="changeSort('${col}')">${col}<span class="sort-indicator">${sortMark}</span></th>`;
-      });
-      html += '<th>操作</th></tr>';
-      thead.innerHTML = html;
+      const thead = document.getElementById('tableHead'); const columns = viewMode === 'simple' ? COLUMNS_SIMPLE : COLUMNS_DETAIL;
+      let html = '<tr>'; columns.forEach(col => { let sortMark = '↕'; if (sortField === col) sortMark = sortDir === 'asc' ? '↑' : '↓'; html += `<th onclick="changeSort('${col}')">${col}<span class="sort-indicator">${sortMark}</span></th>`; }); html += '<th>操作</th></tr>'; thead.innerHTML = html;
     }
-
-    function changeSort(field) {
-      if (sortField === field) { sortDir = (sortDir === "asc") ? "desc" : "asc"; } 
-      else { sortField = field; sortDir = (field === "比賽日期") ? "desc" : "asc"; }
-      renderHeaders(); applyFilters();
-    }
-
-    function refreshData() {
-        refreshSuggestionLists(); 
-        applyFilters(); 
-    }
+    function changeSort(field) { if (sortField === field) { sortDir = (sortDir === "asc") ? "desc" : "asc"; } else { sortField = field; sortDir = (field === "比賽日期") ? "desc" : "asc"; } renderHeaders(); applyFilters(); }
+    function refreshData() { refreshSuggestionLists(); applyFilters(); }
 
     function getValidOptionsForField(targetField, currentFilters) {
         return racesData.filter(r => {
             let valid = true;
-            if (currentFilters.q) {
-                const cn = (r["比賽名稱"] || r["中文名稱"] || "").toLowerCase();
-                const en = (r["Race Name"] || r["英文名稱"] || "").toLowerCase();
-                const loc = (r["地點"] || "").toLowerCase();
-                if (!cn.includes(currentFilters.q) && !en.includes(currentFilters.q) && !loc.includes(currentFilters.q)) valid = false;
-            }
-            if (targetField !== 'runner' && currentFilters.runner) {
-                if ((r["參賽者"]||"").trim() !== currentFilters.runner) valid = false;
-            }
-            if (targetField !== 'dist' && currentFilters.dist) {
-                const dStr = r["距離"] || "";
-                if (currentFilters.dist === "OTHER") {
-                    if (dStr.includes("10") || dStr.includes("21") || dStr.includes("42")) valid = false;
-                } else if (dStr !== currentFilters.dist) valid = false;
-            }
-            if (targetField !== 'year' && currentFilters.year) {
-                if (!(r["比賽日期"]||"").startsWith(currentFilters.year)) valid = false;
-            }
-            if (targetField !== 'month' && currentFilters.month) {
-                const rDate = r["比賽日期"] || "";
-                if (rDate.length < 7 || rDate.split("-")[1] !== currentFilters.month) valid = false;
-            }
+            if (currentFilters.q) { const cn = (r["比賽名稱"]||r["中文名稱"]||"").toLowerCase(); const en = (r["Race Name"]||r["英文名稱"]||"").toLowerCase(); const loc = (r["地點"]||"").toLowerCase(); if (!cn.includes(currentFilters.q) && !en.includes(currentFilters.q) && !loc.includes(currentFilters.q)) valid = false; }
+            if (targetField !== 'runner' && currentFilters.runner && (r["參賽者"]||"").trim() !== currentFilters.runner) valid = false;
+            if (targetField !== 'dist' && currentFilters.dist) { const dStr = r["距離"]||""; if (currentFilters.dist === "OTHER") { if (dStr.includes("10") || dStr.includes("21") || dStr.includes("42")) valid = false; } else if (dStr !== currentFilters.dist) valid = false; }
+            if (targetField !== 'year' && currentFilters.year && !(r["比賽日期"]||"").startsWith(currentFilters.year)) valid = false;
+            if (targetField !== 'month' && currentFilters.month) { const rDate = r["比賽日期"]||""; if (rDate.length < 7 || rDate.split("-")[1] !== currentFilters.month) valid = false; }
             return valid;
         });
     }
-
     function updateDropdown(elementId, options, currentValue, defaultLabel) {
-        const el = document.getElementById(elementId);
-        let html = `<option value="">${defaultLabel}</option>`;
-        options.forEach(opt => { html += `<option value="${opt.value}">${opt.label}</option>`; });
-        el.innerHTML = html;
-        if (options.map(o => o.value).includes(currentValue)) el.value = currentValue;
-        else el.value = "";
+        const el = document.getElementById(elementId); let html = `<option value="">${defaultLabel}</option>`; options.forEach(opt => { html += `<option value="${opt.value}">${opt.label}</option>`; }); el.innerHTML = html; if (options.map(o => o.value).includes(currentValue)) el.value = currentValue; else el.value = "";
     }
-
     function applyFilters() {
         const q = document.getElementById("searchInput").value.toLowerCase();
-        const runnerVal = document.getElementById("runnerFilter").value;
-        const distVal = document.getElementById("distanceFilter").value;
-        const yearVal = document.getElementById("yearFilter").value;
-        const monthVal = document.getElementById("monthFilter").value;
-
+        const runnerVal = document.getElementById("runnerFilter").value; const distVal = document.getElementById("distanceFilter").value;
+        const yearVal = document.getElementById("yearFilter").value; const monthVal = document.getElementById("monthFilter").value;
         const filters = { q: q, runner: runnerVal, dist: distVal, year: yearVal, month: monthVal };
 
-        const validRunners = getValidOptionsForField('runner', filters);
-        const runnerOpts = Array.from(new Set(validRunners.map(r => (r["參賽者"]||"").trim()).filter(Boolean))).sort().map(r => ({value: r, label: r}));
-        updateDropdown("runnerFilter", runnerOpts, runnerVal, "👤 參賽者");
-
-        const validDists = getValidOptionsForField('dist', filters);
-        const distSet = new Set(validDists.map(r => (r["距離"]||"").trim()).filter(Boolean));
-        const distOpts = Array.from(distSet).sort().map(d => {
-             let label = d;
-             if(d.includes("21")) label = "半馬 ("+d+")";
-             if(d.includes("42")) label = "全馬 ("+d+")";
-             return {value: d, label: label};
-        });
-        updateDropdown("distanceFilter", distOpts, distVal, "📏 距離");
-
-        const validYears = getValidOptionsForField('year', filters);
-        const yearSet = new Set();
-        validYears.forEach(r => { if((r["比賽日期"]||"").length>=4) yearSet.add(r["比賽日期"].substring(0,4)); });
-        const yearOpts = Array.from(yearSet).sort().reverse().map(y => ({value: y, label: y}));
-        updateDropdown("yearFilter", yearOpts, yearVal, "📅 年份");
-
-        const validMonths = getValidOptionsForField('month', filters);
-        const monthSet = new Set();
-        validMonths.forEach(r => { if((r["比賽日期"]||"").length>=7) monthSet.add(r["比賽日期"].split("-")[1]); });
-        const monthOpts = Array.from(monthSet).sort().map(m => ({value: m, label: m+"月"}));
-        updateDropdown("monthFilter", monthOpts, monthVal, "🌙 月份");
+        const validRunners = getValidOptionsForField('runner', filters); const runnerOpts = Array.from(new Set(validRunners.map(r => (r["參賽者"]||"").trim()).filter(Boolean))).sort().map(r => ({value: r, label: r})); updateDropdown("runnerFilter", runnerOpts, runnerVal, "👤 參賽者");
+        const validDists = getValidOptionsForField('dist', filters); const distSet = new Set(validDists.map(r => (r["距離"]||"").trim()).filter(Boolean)); const distOpts = Array.from(distSet).sort().map(d => { let label = d; if(d.includes("21")) label = "半馬 ("+d+")"; if(d.includes("42")) label = "全馬 ("+d+")"; return {value: d, label: label}; }); updateDropdown("distanceFilter", distOpts, distVal, "📏 距離");
+        const validYears = getValidOptionsForField('year', filters); const yearSet = new Set(); validYears.forEach(r => { if((r["比賽日期"]||"").length>=4) yearSet.add(r["比賽日期"].substring(0,4)); }); const yearOpts = Array.from(yearSet).sort().reverse().map(y => ({value: y, label: y})); updateDropdown("yearFilter", yearOpts, yearVal, "📅 年份");
+        const validMonths = getValidOptionsForField('month', filters); const monthSet = new Set(); validMonths.forEach(r => { if((r["比賽日期"]||"").length>=7) monthSet.add(r["比賽日期"].split("-")[1]); }); const monthOpts = Array.from(monthSet).sort().map(m => ({value: m, label: m+"月"})); updateDropdown("monthFilter", monthOpts, monthVal, "🌙 月份");
 
         filtered = racesData.filter(r => {
-            const cn = (r["比賽名稱"] || r["中文名稱"] || "").toLowerCase();
-            const en = (r["Race Name"] || r["英文名稱"] || "").toLowerCase();
-            const loc = (r["地點"] || "").toLowerCase();
+            const cn = (r["比賽名稱"]||r["中文名稱"]||"").toLowerCase(); const en = (r["Race Name"]||r["英文名稱"]||"").toLowerCase(); const loc = (r["地點"]||"").toLowerCase();
             if (q && !cn.includes(q) && !en.includes(q) && !loc.includes(q)) return false;
-            
             if (runnerVal && (r["參賽者"]||"").trim() !== runnerVal) return false;
-            if (distVal) {
-                const d = r["距離"] || "";
-                if (distVal === "OTHER") { if(d.includes("10") || d.includes("21") || d.includes("42")) return false; }
-                else if (d !== distVal) return false;
-            }
+            if (distVal) { const d = r["距離"]||""; if (distVal === "OTHER") { if(d.includes("10") || d.includes("21") || d.includes("42")) return false; } else if (d !== distVal) return false; }
             if (yearVal && !(r["比賽日期"]||"").startsWith(yearVal)) return false;
-            if (monthVal) {
-                const rd = r["比賽日期"] || "";
-                if (rd.length < 7 || rd.split("-")[1] !== monthVal) return false;
-            }
+            if (monthVal) { const rd = r["比賽日期"]||""; if (rd.length < 7 || rd.split("-")[1] !== monthVal) return false; }
             return true;
         });
-
         filtered.sort(function(a, b) {
-            let v1 = a[sortField]; let v2 = b[sortField];
-            if (v1 == null) v1 = ""; if (v2 == null) v2 = "";
-            let cmp = 0;
+            let v1 = a[sortField]; let v2 = b[sortField]; if (v1 == null) v1 = ""; if (v2 == null) v2 = ""; let cmp = 0;
             if (sortField === "比賽日期") { cmp = (!v1 && !v2) ? 0 : (!v1 ? 1 : (!v2 ? -1 : v1.localeCompare(v2))); } 
             else if (["編號", "溫度", "組別名次", "總名次"].includes(sortField)) { cmp = (parseFloat(v1)||0) - (parseFloat(v2)||0); } 
-            else { cmp = String(v1).localeCompare(String(v2), "zh-Hant"); }
-            return sortDir === "desc" ? -cmp : cmp;
+            else { cmp = String(v1).localeCompare(String(v2), "zh-Hant"); } return sortDir === "desc" ? -cmp : cmp;
         });
         renderTable(filtered);
     }
 
     function renderTable(list) {
-      const tbody = document.getElementById("tableBody");
-      const noRes = document.getElementById("noResults");
-      if (!list.length) { tbody.innerHTML = ""; noRes.style.display = "block"; return; }
-      noRes.style.display = "none";
+      const tbody = document.getElementById("tableBody"); const noRes = document.getElementById("noResults");
+      if (!list.length) { tbody.innerHTML = ""; noRes.style.display = "block"; return; } noRes.style.display = "none";
       const columns = viewMode === 'simple' ? COLUMNS_SIMPLE : COLUMNS_DETAIL;
       const rowsHtml = list.map(function(r) {
-        let rowHtml = '<tr>';
-        columns.forEach(col => {
-          let dataKey = col;
-          if (col === "比賽名稱" && !r[col]) dataKey = "中文名稱";
-          if (col === "Race Name" && !r[col]) dataKey = "英文名稱";
-          const val = r[dataKey] || "";
-          let displayVal = val; let extraClass = "";
+        let rowHtml = '<tr>'; columns.forEach(col => {
+          let dataKey = col; if (col === "比賽名稱" && !r[col]) dataKey = "中文名稱"; if (col === "Race Name" && !r[col]) dataKey = "英文名稱";
+          const val = r[dataKey] || ""; let displayVal = val; let extraClass = "";
           if (col === "距離" && val) displayVal = `<span class="distance-tag">${val}</span>`;
-          else if (col === "比賽日期") extraClass = "date-cell";
-          else if (col === "備註") extraClass = "note-cell";
-          else if (col === "完成時間" && !val) extraClass = "empty-cell";
+          else if (col === "比賽日期") extraClass = "date-cell"; else if (col === "備註") extraClass = "note-cell"; else if (col === "完成時間" && !val) extraClass = "empty-cell";
           rowHtml += `<td class="${!val && col !== '備註' ? 'empty-cell ' : ''}${extraClass}">${displayVal}</td>`;
-        });
-        const id = r["編號"];
-        rowHtml += `<td><button class="action-btn" onclick="openEditModal(${id})">編輯</button></td></tr>`;
-        return rowHtml;
-      }).join("");
-      tbody.innerHTML = rowsHtml;
+        }); const id = r["編號"]; rowHtml += `<td><button class="action-btn" onclick="openEditModal(${id})">編輯</button></td></tr>`; return rowHtml;
+      }).join(""); tbody.innerHTML = rowsHtml;
     }
 
     function handleDistanceChange(select) { const i = document.getElementById("f_距離_input"); if (select.value === "custom") { select.style.display = "none"; i.style.display = "block"; i.value = ""; i.focus(); } else { i.style.display = "none"; } }
@@ -722,61 +455,25 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
     function handleCatChange(select) { const i = document.getElementById("f_賽事組別_input"); if (select.value === "custom") { select.style.display = "none"; i.style.display = "block"; i.value = ""; i.focus(); } else { i.style.display = "none"; } }
 
     function openEditModal(id) {
-      currentIndex = racesData.findIndex(r => r["編號"] === id);
-      const r = currentIndex === -1 ? {} : racesData[currentIndex];
-      const isEdit = currentIndex !== -1;
-      document.getElementById("modalTitle").textContent = isEdit ? "編輯比賽記錄" : "新增比賽記錄";
-      document.getElementById("deleteBtn").style.display = isEdit ? "block" : "none";
-      if (!isEdit) { const maxId = racesData.length ? Math.max(...racesData.map(d => Number(d["編號"])||0)) : 0; document.getElementById("f_編號").value = maxId + 1; } 
-      else { document.getElementById("f_編號").value = r["編號"]; }
-      document.getElementById("f_比賽名稱").value = r["比賽名稱"] || r["中文名稱"] || "";
-      document.getElementById("f_RaceName").value = r["Race Name"] || r["英文名稱"] || "";
-      document.getElementById("f_比賽日期").value = r["比賽日期"] || "";
-      document.getElementById("f_參賽編號").value = r["參賽編號"] || "";
-      document.getElementById("f_溫度").value = r["溫度"] || "";
-      document.getElementById("f_組別名次").value = r["組別名次"] || "";
-      document.getElementById("f_總名次").value = r["總名次"] || "";
+      currentIndex = racesData.findIndex(r => r["編號"] === id); const r = currentIndex === -1 ? {} : racesData[currentIndex]; const isEdit = currentIndex !== -1;
+      document.getElementById("modalTitle").textContent = isEdit ? "編輯比賽記錄" : "新增比賽記錄"; document.getElementById("deleteBtn").style.display = isEdit ? "block" : "none";
+      if (!isEdit) { const maxId = racesData.length ? Math.max(...racesData.map(d => Number(d["編號"])||0)) : 0; document.getElementById("f_編號").value = maxId + 1; } else { document.getElementById("f_編號").value = r["編號"]; }
+      document.getElementById("f_比賽名稱").value = r["比賽名稱"]||r["中文名稱"]||""; document.getElementById("f_RaceName").value = r["Race Name"]||r["英文名稱"]||"";
+      document.getElementById("f_比賽日期").value = r["比賽日期"]||""; document.getElementById("f_參賽編號").value = r["參賽編號"]||""; document.getElementById("f_溫度").value = r["溫度"]||""; document.getElementById("f_組別名次").value = r["組別名次"]||""; document.getElementById("f_總名次").value = r["總名次"]||"";
 
       const setupCombo = (field, selectId, inputId, extraOptions=[]) => {
-          const val = r[field] || "";
-          const s = document.getElementById(selectId); const i = document.getElementById(inputId);
+          const val = r[field] || ""; const s = document.getElementById(selectId); const i = document.getElementById(inputId);
           const uniqueVals = Array.from(new Set(racesData.map(d => (d[field]||"").trim()).filter(Boolean))).sort();
-          let html = ''; extraOptions.forEach(opt => html += `<option value="${opt}">${opt}</option>`);
-          uniqueVals.forEach(v => { if (!extraOptions.includes(v)) html += `<option value="${v}">${v}</option>`; });
-          html += '<option value="custom">➕ 自訂...</option>';
-          s.innerHTML = html;
-          if (val && (uniqueVals.includes(val) || extraOptions.includes(val))) { s.value = val; s.style.display="block"; i.style.display="none"; }
-          else if (!val && uniqueVals.length > 0) { s.value = uniqueVals[0]; s.style.display="block"; i.style.display="none"; }
-          else { s.value = "custom"; s.style.display="none"; i.style.display="block"; i.value = val; }
+          let html = ''; extraOptions.forEach(opt => html += `<option value="${opt}">${opt}</option>`); uniqueVals.forEach(v => { if (!extraOptions.includes(v)) html += `<option value="${v}">${v}</option>`; }); html += '<option value="custom">➕ 自訂...</option>'; s.innerHTML = html;
+          if (val && (uniqueVals.includes(val) || extraOptions.includes(val))) { s.value = val; s.style.display="block"; i.style.display="none"; } else if (!val && uniqueVals.length > 0) { s.value = uniqueVals[0]; s.style.display="block"; i.style.display="none"; } else { s.value = "custom"; s.style.display="none"; i.style.display="block"; i.value = val; }
       };
-
-      setupCombo("地點", "f_地點_select", "f_地點_input");
-      setupCombo("主辦單位", "f_主辦單位_select", "f_主辦單位_input");
-      setupCombo("賽事組別", "f_賽事組別_select", "f_賽事組別_input");
-      setupCombo("參賽者", "f_參賽者_select", "f_參賽者_input");
+      setupCombo("地點", "f_地點_select", "f_地點_input"); setupCombo("主辦單位", "f_主辦單位_select", "f_主辦單位_input"); setupCombo("賽事組別", "f_賽事組別_select", "f_賽事組別_input"); setupCombo("參賽者", "f_參賽者_select", "f_參賽者_input");
       
-      const noteVal = r["備註"] || ""; const ns = document.getElementById("f_備註_select"); const ni = document.getElementById("f_備註_input");
-      const noteOpts = Array.from(ns.options).map(o=>o.value);
-      if (noteOpts.includes(noteVal) || !noteVal) { ns.value = noteVal; ns.style.display="block"; ni.style.display="none"; }
-      else { ns.value="custom"; ns.style.display="none"; ni.style.display="block"; ni.value=noteVal; }
-
-      const distVal = r["距離"] || ""; const ds = document.getElementById("f_距離_select"); const di = document.getElementById("f_距離_input");
-      const stdDists = ["10 km", "21.0975 km", "42.195 km"];
-      const dbDists = Array.from(new Set(racesData.map(d => (d["距離"]||"").trim()).filter(Boolean)));
-      let dHtml = ''; stdDists.forEach(d => dHtml += `<option value="${d}">${d}</option>`);
-      dbDists.forEach(d => { if(!stdDists.includes(d)) dHtml += `<option value="${d}">${d}</option>`; });
-      dHtml += '<option value="custom">➕ 自訂...</option>'; ds.innerHTML = dHtml;
-      
-      if (stdDists.includes(distVal) || dbDists.includes(distVal) || !distVal) { ds.value = distVal || "10 km"; ds.style.display="block"; di.style.display="none"; } 
-      else { ds.value="custom"; ds.style.display="none"; di.style.display="block"; di.value=distVal; }
-
-      const feeStr = r["費用"] || ""; const cm = ["港元$", "美元$", "日圓¥", "英鎊£", "歐元€", "澳幣A$"]; let fc = "港元$", fa = feeStr;
-      if (feeStr) { for (let c of cm) { if (feeStr.startsWith(c)) { fc = c; fa = feeStr.replace(c, "").trim(); break; } } }
-      document.getElementById("f_費用_幣種").value = fc; document.getElementById("f_費用_金額").value = fa;
-
-      document.getElementById("f_起步時間").value = r["起步時間"] || "";
-      const ft = (r["完成時間"]||"").split(":");
-      document.getElementById("f_finish_h").value = ft[0]||""; document.getElementById("f_finish_m").value = ft[1]||""; document.getElementById("f_finish_s").value = ft[2]||"";
+      const nVal = r["備註"]||""; const ns = document.getElementById("f_備註_select"); const ni = document.getElementById("f_備註_input"); const nOpts = Array.from(ns.options).map(o=>o.value); if (nOpts.includes(nVal) || !nVal) { ns.value = nVal; ns.style.display="block"; ni.style.display="none"; } else { ns.value="custom"; ns.style.display="none"; ni.style.display="block"; ni.value=nVal; }
+      const distVal = r["距離"]||""; const ds = document.getElementById("f_距離_select"); const di = document.getElementById("f_距離_input"); const stdDists = ["10 km", "21.0975 km", "42.195 km"]; const dbDists = Array.from(new Set(racesData.map(d => (d["距離"]||"").trim()).filter(Boolean))); let dHtml = ''; stdDists.forEach(d => dHtml += `<option value="${d}">${d}</option>`); dbDists.forEach(d => { if(!stdDists.includes(d)) dHtml += `<option value="${d}">${d}</option>`; }); dHtml += '<option value="custom">➕ 自訂...</option>'; ds.innerHTML = dHtml;
+      if (stdDists.includes(distVal) || dbDists.includes(distVal) || !distVal) { ds.value = distVal || "10 km"; ds.style.display="block"; di.style.display="none"; } else { ds.value="custom"; ds.style.display="none"; di.style.display="block"; di.value=distVal; }
+      const feeStr = r["費用"]||""; const cm = ["港元$", "美元$", "日圓¥", "英鎊£", "歐元€", "澳幣A$"]; let fc = "港元$", fa = feeStr; if (feeStr) { for (let c of cm) { if (feeStr.startsWith(c)) { fc = c; fa = feeStr.replace(c, "").trim(); break; } } } document.getElementById("f_費用_幣種").value = fc; document.getElementById("f_費用_金額").value = fa;
+      document.getElementById("f_起步時間").value = r["起步時間"]||""; const ft = (r["完成時間"]||"").split(":"); document.getElementById("f_finish_h").value = ft[0]||""; document.getElementById("f_finish_m").value = ft[1]||""; document.getElementById("f_finish_s").value = ft[2]||"";
       document.getElementById("editModal").classList.add("show");
     }
 
@@ -784,49 +481,21 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
     function openAddModal() { document.getElementById('settingsMenu').classList.remove('show'); openEditModal(-1); }
 
     function saveRace() {
-      const rec = {};
-      rec["編號"] = parseInt(document.getElementById("f_編號").value, 10);
-      rec["比賽名稱"] = document.getElementById("f_比賽名稱").value.trim(); rec["Race Name"] = document.getElementById("f_RaceName").value.trim();
-      rec["中文名稱"] = rec["比賽名稱"]; rec["英文名稱"] = rec["Race Name"];
-      rec["比賽日期"] = document.getElementById("f_比賽日期").value;
-      rec["參賽編號"] = document.getElementById("f_參賽編號").value.trim();
-      rec["溫度"] = document.getElementById("f_溫度").value;
-      rec["組別名次"] = document.getElementById("f_組別名次").value;
-      rec["總名次"] = document.getElementById("f_總名次").value;
-
+      const rec = {}; rec["編號"] = parseInt(document.getElementById("f_編號").value, 10);
+      rec["比賽名稱"] = document.getElementById("f_比賽名稱").value.trim(); rec["Race Name"] = document.getElementById("f_RaceName").value.trim(); rec["中文名稱"] = rec["比賽名稱"]; rec["英文名稱"] = rec["Race Name"];
+      rec["比賽日期"] = document.getElementById("f_比賽日期").value; rec["參賽編號"] = document.getElementById("f_參賽編號").value.trim(); rec["溫度"] = document.getElementById("f_溫度").value; rec["組別名次"] = document.getElementById("f_組別名次").value; rec["總名次"] = document.getElementById("f_總名次").value;
       const saveCombo = (selId, inpId) => { const s = document.getElementById(selId); const i = document.getElementById(inpId); return (s.value === "custom") ? i.value.trim() : s.value; };
-      rec["地點"] = saveCombo("f_地點_select", "f_地點_input");
-      rec["主辦單位"] = saveCombo("f_主辦單位_select", "f_主辦單位_input");
-      rec["賽事組別"] = saveCombo("f_賽事組別_select", "f_賽事組別_input");
-      rec["參賽者"] = saveCombo("f_參賽者_select", "f_參賽者_input");
-      rec["備註"] = saveCombo("f_備註_select", "f_備註_input");
-      rec["距離"] = saveCombo("f_距離_select", "f_距離_input");
-      
+      rec["地點"] = saveCombo("f_地點_select", "f_地點_input"); rec["主辦單位"] = saveCombo("f_主辦單位_select", "f_主辦單位_input"); rec["賽事組別"] = saveCombo("f_賽事組別_select", "f_賽事組別_input"); rec["參賽者"] = saveCombo("f_參賽者_select", "f_參賽者_input"); rec["備註"] = saveCombo("f_備註_select", "f_備註_input"); rec["距離"] = saveCombo("f_距離_select", "f_距離_input");
       const curr = document.getElementById("f_費用_幣種").value; const amt = document.getElementById("f_費用_金額").value.trim(); rec["費用"] = (curr && amt) ? curr + amt : (amt || "");
-      rec["起步時間"] = document.getElementById("f_起步時間").value;
-      const h = document.getElementById("f_finish_h").value.trim(), m = document.getElementById("f_finish_m").value.trim(), s = document.getElementById("f_finish_s").value.trim();
-      rec["完成時間"] = (h||m||s) ? `${h}:${(m||0).toString().padStart(2,'0')}:${(s||0).toString().padStart(2,'0')}` : "";
-
+      rec["起步時間"] = document.getElementById("f_起步時間").value; const h = document.getElementById("f_finish_h").value.trim(), m = document.getElementById("f_finish_m").value.trim(), s = document.getElementById("f_finish_s").value.trim(); rec["完成時間"] = (h||m||s) ? `${h}:${(m||0).toString().padStart(2,'0')}:${(s||0).toString().padStart(2,'0')}` : "";
       if (!rec["比賽名稱"] && !rec["Race Name"]) { alert("請至少輸入比賽名稱。"); return; }
-      if (currentIndex === -1) { racesData.push(rec); } else { racesData[currentIndex] = rec; }
-      refreshData(); closeEditModal();
+      if (currentIndex === -1) { racesData.push(rec); } else { racesData[currentIndex] = rec; } refreshData(); closeEditModal();
     }
 
     function deleteRace() { if (currentIndex === -1 || !confirm("確定刪除？")) return; racesData.splice(currentIndex, 1); refreshData(); closeEditModal(); }
-    
-    function refreshSuggestionLists() {
-      updateDatalist("list-cn-name", ["比賽名稱", "中文名稱"]); updateDatalist("list-en-name", ["Race Name", "英文名稱"]);
-    }
-    function updateDatalist(id, keys) {
-      const dl = document.getElementById(id); if (!dl) return;
-      const vals = new Set(); racesData.forEach(r => { keys.forEach(k => { if(r[k]) vals.add(r[k].trim()); }); });
-      dl.innerHTML = Array.from(vals).sort().map(v => `<option value="${v.replace(/"/g, "&quot;")}"></option>`).join("");
-    }
-    function resetFilters() {
-      document.getElementById("searchInput").value = ""; document.getElementById("runnerFilter").value = "";
-      document.getElementById("distanceFilter").value = ""; document.getElementById("yearFilter").value = ""; document.getElementById("monthFilter").value = "";
-      applyFilters();
-    }
+    function refreshSuggestionLists() { updateDatalist("list-cn-name", ["比賽名稱", "中文名稱"]); updateDatalist("list-en-name", ["Race Name", "英文名稱"]); }
+    function updateDatalist(id, keys) { const dl = document.getElementById(id); if (!dl) return; const vals = new Set(); racesData.forEach(r => { keys.forEach(k => { if(r[k]) vals.add(r[k].trim()); }); }); dl.innerHTML = Array.from(vals).sort().map(v => `<option value="${v.replace(/"/g, "&quot;")}"></option>`).join(""); }
+    function resetFilters() { document.getElementById("searchInput").value = ""; document.getElementById("runnerFilter").value = ""; document.getElementById("distanceFilter").value = ""; document.getElementById("yearFilter").value = ""; document.getElementById("monthFilter").value = ""; applyFilters(); }
 
     function triggerImportJson() { document.getElementById("importJsonFile").click(); document.getElementById('settingsMenu').classList.remove('show'); }
     function triggerImportCsv() { document.getElementById("importCsvFile").click(); document.getElementById('settingsMenu').classList.remove('show'); }
