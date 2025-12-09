@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>長跑比賽紀錄 - v1.4.0 (雲端版)</title>
+  <title>長跑比賽紀錄 - v1.4.1 (完整教學版)</title>
   <style>
     :root {
       --primary: #667eea;
@@ -34,10 +34,7 @@
     .view-mode-btn.active { background: #fff; color: var(--primary); font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     
     .add-btn { 
-      padding: 8px 16px; 
-      background: #28a745; 
-      color: #fff; 
-      font-weight: bold; 
+      padding: 8px 16px; background: #28a745; color: #fff; font-weight: bold; 
       flex-shrink: 0; white-space: nowrap; z-index: 5;
       display: flex; align-items: center; justify-content: center;
     }
@@ -50,8 +47,6 @@
     .menu-item { display: block; width: 100%; padding: 10px 15px; text-align: left; background: transparent; color: #333; }
     .menu-item:hover { background: #f8f9fa; color: var(--primary); }
     .menu-divider { border-top: 1px solid #eee; margin: 4px 0; }
-    
-    /* Highlight Cloud Item */
     .menu-item.cloud-item { color: #667eea; font-weight: bold; background: #f0f4ff; }
 
     /* Table */
@@ -73,7 +68,6 @@
     .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; backdrop-filter: blur(2px); }
     .modal.show { display:flex; align-items: center; justify-content: center; }
     .modal-content { background:#fff; width:95%; max-width:900px; padding:25px; border-radius:12px; max-height:90vh; overflow-y:auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
-    
     .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
     .modal-header h2 { font-size:1.4em; color: #333; }
     .close-btn { font-size:2em; line-height: 1; color: #999; background: none; }
@@ -85,26 +79,21 @@
       grid-column: span 2; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px;
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: end;
     }
-
     .form-group { margin-bottom: 5px; }
     .form-group label { font-size:0.85em; font-weight:bold; color: #555; margin-bottom:4px; display:block; }
-    
     .form-group input, .form-group select, .form-group textarea { 
       width:100%; padding:8px 10px; border-radius:6px; border:1px solid #ccc; font-size:0.95em; font-family: inherit;
     }
     .form-group textarea { resize: vertical; min-height: 38px; }
     .form-group input[type="date"] { padding: 7px 10px; height: 38px; }
-
     .input-group { display: flex; gap: 0; }
     .input-group select { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none; background: #eee; width: 35%; min-width: 80px; height: 38px; }
     .input-group input { border-top-left-radius: 0; border-bottom-left-radius: 0; flex: 1; height: 38px; }
-
     .time-split-group { display: flex; align-items: center; gap: 4px; }
     .time-split-group input { text-align: center; padding: 8px 2px; height: 38px; }
     .time-split-group input#f_finish_h { flex: 1.5; min-width: 65px; } 
     .time-split-group input#f_finish_m, .time-split-group input#f_finish_s { flex: 1; }
     .time-colon { font-weight: bold; color: #888; }
-    
     .modal-buttons { margin-top:20px; display:flex; justify-content:flex-end; gap:10px; padding-top: 15px; border-top: 1px solid #eee; }
     .modal-buttons button { padding: 10px 20px; font-size: 1em; }
     .secondary { background:#6c757d; color:#fff; }
@@ -113,12 +102,30 @@
 
     .footer { padding:10px 20px 15px; background:#f8f9fa; font-size:0.8em; color:#666; border-top:1px solid #e5e5e5; margin-top: auto;}
 
-    /* Cloud Modal Specific */
-    .cloud-status { padding: 15px; border-radius: 8px; background: #eef2f7; margin-bottom: 20px; word-break: break-all; font-size: 0.9em; color: #555; }
+    /* CLOUD MODAL STYLES (v1.4.1 Updated) */
+    .setup-guide { 
+      background: #fff8e1; border: 1px solid #ffe0b2; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 0.9em; 
+    }
+    .setup-guide h4 { margin-top: 0; margin-bottom: 10px; color: #e65100; display: flex; align-items: center; gap: 5px; }
+    .setup-guide ol { padding-left: 20px; margin: 0; color: #333; line-height: 1.6; }
+    .setup-guide li { margin-bottom: 8px; }
+    
+    .code-box { position: relative; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; }
+    .code-box textarea {
+      width: 100%; height: 100px; padding: 10px; font-family: monospace; font-size: 0.85em; border: none; background: #fafafa; color: #333; resize: vertical;
+    }
+    .copy-code-btn {
+      position: absolute; top: 5px; right: 5px; padding: 4px 8px; background: #667eea; color: #fff; border: none; border-radius: 4px; font-size: 0.8em; cursor: pointer; opacity: 0.9;
+    }
+    .copy-code-btn:hover { opacity: 1; }
+
+    .cloud-input-section { margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+    .cloud-status { padding: 10px; border-radius: 6px; background: #f1f3f5; margin-top: 10px; font-size: 0.9em; word-break: break-all; }
+    
     .cloud-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
     .cloud-btn { padding: 15px; border: 1px solid #ccc; border-radius: 8px; background: #fff; text-align: center; cursor: pointer; transition: 0.2s; }
     .cloud-btn:hover { background: #f8f9fa; border-color: #999; }
-    .cloud-btn h3 { margin-bottom: 5px; color: var(--primary); }
+    .cloud-btn h3 { margin-bottom: 5px; color: var(--primary); font-size: 1.1em; }
     .cloud-btn p { font-size: 0.85em; color: #666; margin: 0; }
     
     @media (max-width: 768px) {
@@ -140,7 +147,7 @@
   <div class="container">
     <header>
       <h1>🏃‍♂️ 長跑比賽紀錄</h1>
-      <p>v1.4.0 (雲端同步版)</p>
+      <p>v1.4.1 (完整教學版)</p>
     </header>
 
     <div class="controls">
@@ -349,22 +356,69 @@
   </div>
 
   <div id="cloudModal" class="modal">
-    <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-content" style="max-width: 650px;">
       <div class="modal-header">
         <h2>☁️ 雲端同步設定 (Google Sheets)</h2>
         <button class="close-btn" onclick="closeCloudModal()">×</button>
       </div>
       
-      <div class="form-group">
-        <label>Google Apps Script 網址 (Web App URL)</label>
-        <input id="gasUrlInput" type="text" placeholder="https://script.google.com/macros/s/..../exec">
-        <p style="font-size:0.8em; color:#666; margin-top:5px;">
-          請輸入部署完成的 Web App 網址。 (設定將自動儲存在瀏覽器中)
-        </p>
+      <div class="setup-guide">
+        <h4>⚙️ Google 端設定教學 (僅需一次)</h4>
+        <ol>
+          <li>到 Google Sheets 建立空白試算表，點擊上方 <b>擴充功能 > Apps Script</b>。</li>
+          <li>清除編輯器內容，點擊右方按鈕複製代碼並貼上：
+            <div class="code-box">
+              <button class="copy-code-btn" onclick="copyGasCode()">📋 複製代碼</button>
+              <textarea id="gasCodeSource" readonly>
+function doGet(e){return handleRequest(e);}
+function doPost(e){return handleRequest(e);}
+function handleRequest(e){
+ var lock=LockService.getScriptLock();lock.tryLock(10000);
+ try{
+  var sheet=SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  if(e.postData){
+   var data=JSON.parse(e.postData.contents);
+   if(!Array.isArray(data)||data.length===0) return responseJSON({status:'error',message:'無效'});
+   var headers=Object.keys(data[0]);
+   sheet.clear();
+   sheet.getRange(1,1,1,headers.length).setValues([headers]);
+   var rows=data.map(function(r){return headers.map(function(k){return r[k]||"";});});
+   if(rows.length>0) sheet.getRange(2,1,rows.length,headers.length).setValues(rows);
+   return responseJSON({status:'success',message:'備份成功'});
+  }else{
+   var rows=sheet.getDataRange().getValues();
+   if(rows.length<2) return responseJSON([]);
+   var headers=rows.shift();
+   var result=rows.map(function(r){var o={};headers.forEach(function(h,i){o[h]=String(r[i]);});return o;});
+   return responseJSON(result);
+  }
+ }catch(e){return responseJSON({status:'error',message:String(e)});}
+ finally{lock.releaseLock();}
+}
+function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d)).setMimeType(ContentService.MimeType.JSON);}
+              </textarea>
+            </div>
+          </li>
+          <li>點擊 <b>部署 > 新增部署 > 網頁應用程式</b>。</li>
+          <li>設定：執行身分=<b>我</b>，誰可以存取=<b>所有人</b> (重要!)。</li>
+          <li>複製「網頁應用程式網址」並貼在下方欄位。</li>
+        </ol>
       </div>
-      
-      <div class="cloud-status" id="cloudStatus">
-        尚未連結。請輸入網址。
+
+      <div class="cloud-input-section">
+        <div class="form-group">
+          <label>Google Apps Script 網址 (Web App URL)</label>
+          <input id="gasUrlInput" type="text" placeholder="https://script.google.com/macros/s/..../exec">
+        </div>
+        
+        <div class="cloud-status" id="cloudStatus">
+          狀態：尚未連結。請輸入網址並點擊儲存。
+        </div>
+
+        <div class="modal-buttons" style="margin-top:10px;">
+          <button class="secondary" onclick="closeCloudModal()">關閉</button>
+          <button class="success" onclick="saveGasUrl()">💾 儲存網址</button>
+        </div>
       </div>
 
       <div class="cloud-actions">
@@ -376,11 +430,6 @@
           <h3>⬇️ 從雲端還原</h3>
           <p>從 Google Sheet 下載<br>並覆蓋目前資料</p>
         </div>
-      </div>
-
-      <div class="modal-buttons">
-        <button class="secondary" onclick="closeCloudModal()">關閉</button>
-        <button class="success" onclick="saveGasUrl()">儲存網址</button>
       </div>
     </div>
   </div>
@@ -397,7 +446,6 @@
     let sortField = "比賽日期";
     let sortDir = "desc";
 
-    // Init
     document.addEventListener('DOMContentLoaded', () => {
         const savedUrl = localStorage.getItem('gasUrl');
         if(savedUrl) {
@@ -650,27 +698,27 @@
     }
 
     /* --- CLOUD SYNC LOGIC --- */
-    function openCloudModal() { 
-        document.getElementById('settingsMenu').classList.remove('show');
-        document.getElementById('cloudModal').classList.add('show'); 
-    }
+    function openCloudModal() { document.getElementById('settingsMenu').classList.remove('show'); document.getElementById('cloudModal').classList.add('show'); }
     function closeCloudModal() { document.getElementById('cloudModal').classList.remove('show'); }
     
+    function copyGasCode() {
+      const code = document.getElementById('gasCodeSource').value;
+      navigator.clipboard.writeText(code).then(() => { alert("代碼已複製！請貼上到 Apps Script 編輯器"); });
+    }
+
     function saveGasUrl() {
         const url = document.getElementById('gasUrlInput').value.trim();
         if(!url) { alert("網址不能為空"); return; }
         localStorage.setItem('gasUrl', url);
-        document.getElementById('cloudStatus').textContent = "✅ 已儲存網址";
+        document.getElementById('cloudStatus').textContent = "✅ 已連結： " + url.substring(0, 30) + "...";
         document.getElementById('cloudStatus').style.color = "green";
     }
 
     function syncCloud(action) {
         const url = localStorage.getItem('gasUrl');
         if(!url) { alert("請先輸入並儲存 Google Apps Script 網址！"); return; }
-        
-        const btnText = (action === 'backup') ? "⬆️ 備份中..." : "⬇️ 還原中...";
         const statusDiv = document.getElementById('cloudStatus');
-        statusDiv.textContent = btnText; statusDiv.style.color = "#667eea";
+        statusDiv.textContent = (action === 'backup') ? "⬆️ 備份中..." : "⬇️ 還原中..."; statusDiv.style.color = "#667eea";
 
         if(action === 'backup') {
             if(!racesData.length) { alert("目前沒有資料可備份"); return; }
@@ -679,32 +727,22 @@
             .then(data => {
                 if(data.status === 'success') { 
                     alert("備份成功！"); 
-                    statusDiv.textContent = "✅ 上次備份成功: " + new Date().toLocaleString(); 
-                    statusDiv.style.color = "green";
+                    statusDiv.textContent = "✅ 上次備份成功: " + new Date().toLocaleString(); statusDiv.style.color = "green";
                 } else { throw new Error(data.message); }
             })
-            .catch(err => { 
-                alert("備份失敗：" + err); 
-                statusDiv.textContent = "❌ 備份失敗"; statusDiv.style.color = "red";
-            });
+            .catch(err => { alert("備份失敗：" + err); statusDiv.textContent = "❌ 備份失敗"; statusDiv.style.color = "red"; });
         } else {
-            // Restore
             if(!confirm("確定從雲端還原？目前的資料將被覆蓋！")) return;
-            fetch(url) // GET request
-            .then(res => res.json())
+            fetch(url).then(res => res.json())
             .then(data => {
                 if(Array.isArray(data)) {
                     racesData = data; refreshData();
                     alert("還原成功！已載入 " + data.length + " 筆資料。");
-                    statusDiv.textContent = "✅ 上次還原成功: " + new Date().toLocaleString();
-                    statusDiv.style.color = "green";
+                    statusDiv.textContent = "✅ 上次還原成功: " + new Date().toLocaleString(); statusDiv.style.color = "green";
                     closeCloudModal();
                 } else { throw new Error("資料格式錯誤"); }
             })
-            .catch(err => {
-                alert("還原失敗：" + err);
-                statusDiv.textContent = "❌ 還原失敗"; statusDiv.style.color = "red";
-            });
+            .catch(err => { alert("還原失敗：" + err); statusDiv.textContent = "❌ 還原失敗"; statusDiv.style.color = "red"; });
         }
     }
     
