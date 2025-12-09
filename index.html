@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>長跑比賽紀錄 - v1.7.0 (全連動優化版)</title>
+  <title>長跑比賽紀錄 - v1.7.1 (完美署名版)</title>
   <style>
     :root {
       --primary: #667eea;
@@ -12,8 +12,25 @@
       --border: #ccc;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif; background:var(--bg); padding:20px; color: var(--text); }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif; background:var(--bg); padding:20px; color: var(--text); padding-bottom: 30px; /* Space for footer */ }
     
+    /* --- GLOBAL COPYRIGHT (FIXED FOOTER) v1.7.1 --- */
+    .global-copyright {
+      position: fixed;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #b0b0b0; /* 極淡灰色 */
+      font-size: 0.75em; /* 極細字 */
+      font-weight: 300;
+      letter-spacing: 1px;
+      z-index: 50; /* 低於 Modal (1000) 和 Menu (100) */
+      pointer-events: none; /* 關鍵：點擊穿透，不阻擋操作 */
+      user-select: none;
+      font-family: "Microsoft JhengHei", sans-serif;
+    }
+
     /* --- LANDING PAGE --- */
     #landingPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; text-align: center; max-width: 600px; margin: 0 auto; }
     .landing-card { background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); width: 100%; }
@@ -31,55 +48,33 @@
 
     /* --- MAIN APP --- */
     #mainApp { display: none; }
-    .container { max-width: 1800px; margin:0 auto; background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1); min-height: 80vh; position: relative;}
+    .container { max-width: 1800px; margin:0 auto; background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1); min-height: 80vh; position: relative; margin-bottom: 20px; }
     header { background:linear-gradient(135deg, var(--primary), #764ba2); color:#fff; padding:20px; text-align:center; border-radius: 12px 12px 0 0; }
     header h1 { font-size:1.8em; margin-bottom:5px; }
     
-    /* Controls - Mobile Optimized v1.7 */
     .controls { padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #e5e5e5; display: flex; flex-direction: column; gap: 10px; }
-    
-    /* Row 1: Search + Settings */
     .control-row-top { display: flex; gap: 8px; width: 100%; align-items: center; }
     .control-row-top input { flex: 1; padding:10px; border-radius:6px; border:1px solid var(--border); font-size:1em; }
     
-    /* Row 2: Filters + View + Reset */
-    .control-row-filters { 
-        display: flex; align-items: center; gap: 8px; flex-wrap: wrap; 
-    }
-    
-    .filter-select { 
-        padding: 8px 6px; border-radius: 6px; border: 1px solid var(--border); background: #fff; 
-        font-size: 0.9em; flex: 1; min-width: 80px; /* More compact for mobile */
-    }
+    .control-row-filters { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .filter-select { padding: 8px 6px; border-radius: 6px; border: 1px solid var(--border); background: #fff; font-size: 0.9em; flex: 1; min-width: 80px; }
     #runnerFilter { flex: 1.5; min-width: 100px; }
     
     button { cursor: pointer; border: none; border-radius: 6px; font-size: 0.95em; transition: 0.2s; }
-    
     .view-mode-group { display: flex; background: #e9ecef; padding: 2px; border-radius: 6px; flex-shrink: 0; }
     .view-mode-btn { padding: 6px 10px; background: transparent; color: #666; font-size: 0.9em; }
     .view-mode-btn.active { background: #fff; color: var(--primary); font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     
-    /* Compact Reset Button */
-    .reset-btn {
-        background: #e9ecef; color: #666; padding: 0; width: 36px; height: 36px;
-        display: flex; align-items: center; justify-content: center; font-size: 1.2em;
-        border-radius: 6px; flex-shrink: 0;
-    }
+    .reset-btn { background: #e9ecef; color: #666; padding: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; border-radius: 6px; flex-shrink: 0; }
     .reset-btn:hover { background: #dee2e6; color: #333; }
 
-    /* New Add Button inside Settings */
-    .menu-add-btn {
-        width: 100%; padding: 12px; background: #28a745; color: #fff; font-weight: bold;
-        border-radius: 6px; text-align: center; margin-bottom: 10px; cursor: pointer; border:none;
-        display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
+    .menu-add-btn { width: 100%; padding: 12px; background: #28a745; color: #fff; font-weight: bold; border-radius: 6px; text-align: center; margin-bottom: 10px; cursor: pointer; border:none; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .menu-add-btn:hover { background: #218838; }
     
     .settings-container { position: relative; flex-shrink: 0; }
     .settings-btn { background: #fff; border: 1px solid var(--border); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1.3em; border-radius: 6px; }
     .settings-menu { display: none; position: absolute; top: 100%; right: 0; width: 240px; background: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); z-index: 100; padding: 10px; margin-top: 5px; }
     .settings-menu.show { display: block; }
-    
     .menu-item { display: block; width: 100%; padding: 10px 15px; text-align: left; background: transparent; color: #333; }
     .menu-item:hover { background: #f8f9fa; color: var(--primary); }
     .menu-divider { border-top: 1px solid #eee; margin: 6px 0; }
@@ -135,9 +130,8 @@
     .delete-btn { background:#dc3545; color:#fff; margin-right: auto; }
     .success { background:#28a745; color:#fff; }
 
-    /* Footer & Copyright Styles */
+    /* Footer */
     .footer { padding:10px 20px 15px; background:#f8f9fa; font-size:0.8em; color:#666; border-top:1px solid #e5e5e5; margin-top: auto;}
-    .copyright { margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ddd; text-align: center; color: #bbb; font-size: 0.85em; font-weight: 300; letter-spacing: 1px; font-style: italic; }
 
     /* Cloud Modal */
     .setup-guide { background: #fff8e1; border: 1px solid #ffe0b2; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 0.9em; }
@@ -159,14 +153,12 @@
     .cloud-btn p { font-size: 0.85em; color: #666; margin: 0; }
     
     @media (max-width: 768px) {
-      body { padding: 20px 10px; }
+      body { padding: 20px 10px 40px 10px; } /* Bottom padding for fixed footer */
       .container { border-radius: 0; min-height: 100vh; }
       .controls { gap: 8px; }
       .control-row-filters { gap: 5px; }
-      /* Force filters to share row comfortably */
       .filter-select { flex: 1 1 30%; min-width: 70px; font-size: 0.85em; padding: 8px 4px; }
-      #runnerFilter { flex: 1 1 100%; width: 100%; min-width: 100%; order: -1; } /* Runner full width on row 2 start */
-      
+      #runnerFilter { flex: 1 1 100%; width: 100%; min-width: 100%; order: -1; }
       .modal-content { width: 100%; height: 100%; max-height: 100vh; border-radius: 0; padding: 15px; }
       .edit-grid { grid-template-columns: 1fr; gap: 12px; }
       .field-full-mobile { grid-column: 1 / -1; }
@@ -177,6 +169,8 @@
   </style>
 </head>
 <body>
+
+  <div class="global-copyright">豐狂出品 • 紀錄每一步</div>
 
   <div id="landingPage">
     <div class="landing-card">
@@ -198,7 +192,6 @@
         <div class="btn-text"><h4>空白開始</h4><p>建立全新的紀錄表</p></div>
       </button>
       <div class="demo-link">需要範例檔？ <a href="https://fungccc.github.io/running-race-log/demo/demo_rrlog.csv" download>點此下載 Demo CSV</a></div>
-      <div class="copyright" style="margin-top: 30px; border-top: none;">豐狂出品 • 紀錄每一步</div>
     </div>
   </div>
 
@@ -206,7 +199,7 @@
     <div class="container">
       <header>
         <h1>🏃‍♂️ 長跑比賽紀錄</h1>
-        <p>v1.7.0 (全連動優化版)</p>
+        <p>v1.7.1 (完美署名版)</p>
       </header>
 
       <div class="controls">
@@ -216,7 +209,6 @@
             <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
             <div id="settingsMenu" class="settings-menu">
               <button class="menu-add-btn" onclick="openAddModal()">➕ 新增賽事紀錄</button>
-              
               <button class="menu-item cloud-item" onclick="openCloudModal()">☁️ 設定雲端連結</button>
               <div class="menu-divider"></div>
               <div class="menu-item" style="font-size:0.8em; color:#999; font-weight:bold;">本機檔案操作</div>
@@ -268,7 +260,6 @@
 
       <div class="footer">
         💡 提示：設定 Google Sheet 連結後，即可在不同裝置間同步資料。
-        <div class="copyright">豐狂出品 • 紀錄每一步</div>
       </div>
     </div>
   </div>
@@ -469,7 +460,7 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
           <label>Google Apps Script 網址 (Web App URL)</label>
           <input id="gasUrlInput" type="text" placeholder="https://script.google.com/macros/s/..../exec">
         </div>
-        <div class="cloud-status" id="cloudStatus">狀態：尚未連結。</div>
+        <div class="cloud-status" id="cloudStatus">狀態：尚未連結。請輸入網址並點擊儲存。</div>
         <div class="modal-buttons" style="margin-top:10px;">
           <button class="secondary" onclick="closeCloudModal()">關閉</button>
           <button class="success" onclick="saveGasUrl()">💾 儲存網址</button>
@@ -480,8 +471,6 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
         <div class="cloud-btn" onclick="syncCloud('backup')"><h3>⬆️ 備份到雲端</h3><p>將網頁資料覆蓋到 Sheet</p></div>
         <div class="cloud-btn" onclick="syncCloud('restore')"><h3>⬇️ 從雲端還原</h3><p>從 Sheet 下載並覆蓋資料</p></div>
       </div>
-      
-      <div class="copyright" style="margin-top:20px;">豐狂出品 • 紀錄每一步</div>
     </div>
   </div>
 
@@ -528,20 +517,37 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
     function enterAppEmpty() { racesData = []; showMainApp(); }
 
     function loadDemoFromUrl() {
-        if(!confirm("確定載入 Demo 資料？")) return;
-        fetch(DEMO_URL).then(r => { if(!r.ok)throw new Error("Net err"); return r.text(); })
-        .then(csv => { parseCSVData(csv); resetFilters(); alert("載入成功！"); showMainApp(); })
-        .catch(e => alert("載入失敗: "+e.message));
+        if(!confirm("確定要載入 Demo 資料嗎？這將會覆蓋您目前的暫存資料。")) return;
+        fetch(DEMO_URL)
+        .then(response => { if (!response.ok) throw new Error("Network response was not ok"); return response.text(); })
+        .then(csvText => {
+            parseCSVData(csvText);
+            document.getElementById("searchInput").value = "";
+            document.getElementById("runnerFilter").value = "";
+            document.getElementById("distanceFilter").value = "";
+            document.getElementById("yearFilter").value = "";
+            document.getElementById("monthFilter").value = "";
+            alert("Demo 資料載入成功！");
+            showMainApp();
+        })
+        .catch(error => { alert("載入 Demo 失敗：" + error.message); });
     }
     
     function triggerLandingImport() { document.getElementById("landingImportFile").click(); }
     function handleLandingImport(file) {
-        if(!file) return; const reader = new FileReader();
+        if(!file) return;
+        const reader = new FileReader();
         reader.onload = e => {
-            const c = e.target.result;
-            if (file.name.endsWith('.json')) { try { const d=JSON.parse(c); if(Array.isArray(d)){racesData=d;showMainApp();}else alert("格式錯誤"); } catch(e){alert("JSON 錯誤");} } 
-            else { parseCSVData(c); showMainApp(); }
-        }; reader.readAsText(file);
+            const content = e.target.result;
+            if (file.name.endsWith('.json')) {
+                try {
+                    const data = JSON.parse(content);
+                    if (Array.isArray(data)) { racesData = data; showMainApp(); }
+                    else alert("JSON 格式錯誤");
+                } catch (err) { alert("JSON 解析失敗"); }
+            } else { parseCSVData(content); showMainApp(); }
+        };
+        reader.readAsText(file);
     }
 
     function toggleSettings() { document.getElementById('settingsMenu').classList.toggle('show'); }
@@ -571,37 +577,32 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
       renderHeaders(); applyFilters();
     }
 
-    function refreshData() { refreshSuggestionLists(); applyFilters(); }
+    function refreshData() {
+        refreshSuggestionLists(); 
+        applyFilters(); 
+    }
 
-    /* --- FULLY LINKED FILTERS LOGIC (BI-DIRECTIONAL) --- */
     function getValidOptionsForField(targetField, currentFilters) {
-        // Filter data based on ALL active filters EXCEPT the target field itself
-        // This allows the user to see what's possible given the other constraints
         return racesData.filter(r => {
             let valid = true;
-            // Search Text
             if (currentFilters.q) {
                 const cn = (r["比賽名稱"] || r["中文名稱"] || "").toLowerCase();
                 const en = (r["Race Name"] || r["英文名稱"] || "").toLowerCase();
                 const loc = (r["地點"] || "").toLowerCase();
                 if (!cn.includes(currentFilters.q) && !en.includes(currentFilters.q) && !loc.includes(currentFilters.q)) valid = false;
             }
-            // Runner
             if (targetField !== 'runner' && currentFilters.runner) {
                 if ((r["參賽者"]||"").trim() !== currentFilters.runner) valid = false;
             }
-            // Distance
             if (targetField !== 'dist' && currentFilters.dist) {
                 const dStr = r["距離"] || "";
                 if (currentFilters.dist === "OTHER") {
                     if (dStr.includes("10") || dStr.includes("21") || dStr.includes("42")) valid = false;
                 } else if (dStr !== currentFilters.dist) valid = false;
             }
-            // Year
             if (targetField !== 'year' && currentFilters.year) {
                 if (!(r["比賽日期"]||"").startsWith(currentFilters.year)) valid = false;
             }
-            // Month
             if (targetField !== 'month' && currentFilters.month) {
                 const rDate = r["比賽日期"] || "";
                 if (rDate.length < 7 || rDate.split("-")[1] !== currentFilters.month) valid = false;
@@ -612,11 +613,8 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
 
     function updateDropdown(elementId, options, currentValue, defaultLabel) {
         const el = document.getElementById(elementId);
-        // Preserve current value if it exists in new options, else reset
         let html = `<option value="">${defaultLabel}</option>`;
-        options.forEach(opt => {
-            html += `<option value="${opt.value}">${opt.label}</option>`;
-        });
+        options.forEach(opt => { html += `<option value="${opt.value}">${opt.label}</option>`; });
         el.innerHTML = html;
         if (options.map(o => o.value).includes(currentValue)) el.value = currentValue;
         else el.value = "";
@@ -631,12 +629,10 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
 
         const filters = { q: q, runner: runnerVal, dist: distVal, year: yearVal, month: monthVal };
 
-        // 1. Calculate Valid Options for Runner
         const validRunners = getValidOptionsForField('runner', filters);
         const runnerOpts = Array.from(new Set(validRunners.map(r => (r["參賽者"]||"").trim()).filter(Boolean))).sort().map(r => ({value: r, label: r}));
         updateDropdown("runnerFilter", runnerOpts, runnerVal, "👤 參賽者");
 
-        // 2. Calculate Valid Options for Distance
         const validDists = getValidOptionsForField('dist', filters);
         const distSet = new Set(validDists.map(r => (r["距離"]||"").trim()).filter(Boolean));
         const distOpts = Array.from(distSet).sort().map(d => {
@@ -647,21 +643,18 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
         });
         updateDropdown("distanceFilter", distOpts, distVal, "📏 距離");
 
-        // 3. Calculate Valid Options for Year
         const validYears = getValidOptionsForField('year', filters);
         const yearSet = new Set();
         validYears.forEach(r => { if((r["比賽日期"]||"").length>=4) yearSet.add(r["比賽日期"].substring(0,4)); });
         const yearOpts = Array.from(yearSet).sort().reverse().map(y => ({value: y, label: y}));
         updateDropdown("yearFilter", yearOpts, yearVal, "📅 年份");
 
-        // 4. Calculate Valid Options for Month
         const validMonths = getValidOptionsForField('month', filters);
         const monthSet = new Set();
         validMonths.forEach(r => { if((r["比賽日期"]||"").length>=7) monthSet.add(r["比賽日期"].split("-")[1]); });
         const monthOpts = Array.from(monthSet).sort().map(m => ({value: m, label: m+"月"}));
         updateDropdown("monthFilter", monthOpts, monthVal, "🌙 月份");
 
-        // 5. Final Filter for Table
         filtered = racesData.filter(r => {
             const cn = (r["比賽名稱"] || r["中文名稱"] || "").toLowerCase();
             const en = (r["Race Name"] || r["英文名稱"] || "").toLowerCase();
@@ -721,7 +714,6 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
       tbody.innerHTML = rowsHtml;
     }
 
-    // Modal Logic
     function handleDistanceChange(select) { const i = document.getElementById("f_距離_input"); if (select.value === "custom") { select.style.display = "none"; i.style.display = "block"; i.value = ""; i.focus(); } else { i.style.display = "none"; } }
     function handleRunnerChange(select) { const i = document.getElementById("f_參賽者_input"); if (select.value === "custom") { select.style.display = "none"; i.style.display = "block"; i.value = ""; i.focus(); } else { i.style.display = "none"; } }
     function handleNoteChange(select) { const i = document.getElementById("f_備註_input"); if (select.value === "custom") { select.style.display = "none"; i.style.display = "block"; i.value = ""; i.focus(); } else { i.style.display = "none"; } }
@@ -796,7 +788,6 @@ function responseJSON(d){return ContentService.createTextOutput(JSON.stringify(d
       rec["編號"] = parseInt(document.getElementById("f_編號").value, 10);
       rec["比賽名稱"] = document.getElementById("f_比賽名稱").value.trim(); rec["Race Name"] = document.getElementById("f_RaceName").value.trim();
       rec["中文名稱"] = rec["比賽名稱"]; rec["英文名稱"] = rec["Race Name"];
-      
       rec["比賽日期"] = document.getElementById("f_比賽日期").value;
       rec["參賽編號"] = document.getElementById("f_參賽編號").value.trim();
       rec["溫度"] = document.getElementById("f_溫度").value;
