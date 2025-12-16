@@ -108,7 +108,22 @@
     </form>
 </div>
 
+
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+
+<script src="firebase-config.js"></script>
+
+
+
+
+
+
 <script>
+    console.log("目前頁面可以使用 db:", db);
     // 初始化日期
     document.getElementById('trainingDate').value = new Date().toISOString().slice(0,16);
 
@@ -229,6 +244,8 @@
         alert(`已儲存！包含 ${segments.length} 個訓練項目。\n總距離: ${document.getElementById('totalDist').innerText}km`);
     });
 </script>
+
+
 
 </body>
 </html>
