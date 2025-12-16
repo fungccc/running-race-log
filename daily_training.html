@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增日常訓練 - 長跑紀錄 v1.7.1</title>
+    <style>
+        /* 簡單的樣式，保持乾淨 */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f4f9; color: #333; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        
+        /* 補給區塊的特殊樣式 */
+        .nutrition-section { background-color: #eef2f5; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid #3498db; }
+        .counter-box { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
+        .btn-small { padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .gel-list { list-style: none; padding: 0; margin-top: 10px; }
+        .gel-list li { background: #fff; padding: 8px; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; font-size: 0.9em; }
+
+        .btn-submit { width: 100%; padding: 12px; background-color: #27ae60; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+        .btn-back { display: block; text-align: center; margin-top: 15px; color: #7f8c8d; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📝 新增訓練紀錄</h2>
+    
+    <form id="trainingForm">
+        <div class="form-group">
+            <label>日期與時間</label>
+            <input type="datetime-local" id="trainingDate" required>
+        </div>
+
+        <div class="form-group" style="display:flex; gap:10px;">
+            <div style="flex:1;">
+                <label>距離 (km)</label>
+                <input type="number" step="0.01" placeholder="例如: 10.5">
+            </div>
+            <div style="flex:1;">
+                <label>總時間 (分鐘)</label>
+                <input type="number" placeholder="例如: 60">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>天氣狀況</label>
+            <select id="weather">
+                <option value="sunny">☀️ 晴天</option>
+                <option value="cloudy">☁️ 多雲</option>
+                <option value="rainy">🌧️ 雨天</option>
+                <option value="windy">🌬️ 強風</option>
+            </select>
+        </div>
+
+        <div class="nutrition-section">
+            <label>💧 飲水紀錄</label>
+            <div class="counter-box">
+                <button type="button" class="btn-small" onclick="updateWater(-1)">-</button>
+                <span id="waterCount">0</span> 次
+                <button type="button" class="btn-small" onclick="updateWater(1)">+</button>
+                <input type="number" id="waterVolume" placeholder="總水量 (ml)" style="width: 120px; margin-left: auto;">
+            </div>
+        </div>
+
+        <div class="nutrition-section" style="border-left-color: #f39c12;">
+            <label>⚡ 能量膠 (Energy Gel)</label>
+            <div class="counter-box">
+                <input type="text" id="gelTime" placeholder="例如: 10km處 / 45分鐘" style="flex:1;">
+                <button type="button" class="btn-small" style="background:#f39c12;" onclick="addGelRecord()">新增紀錄</button>
+            </div>
+            <ul id="gelList" class="gel-list">
+                </ul>
+        </div>
+
+        <div class="form-group">
+            <label>訓練後檢討/筆記</label>
+            <textarea rows="3" placeholder="今天感覺如何？配速是否穩定？腿部狀況？"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">💾 儲存紀錄</button>
+        <a href="index.html" class="btn-back">返回首頁</a>
+    </form>
+</div>
+
+<script>
+    // 設定預設時間為現在
+    document.getElementById('trainingDate').value = new Date().toISOString().slice(0,16);
+
+    // 水份計數邏輯
+    let waterClicks = 0;
+    function updateWater(change) {
+        waterClicks += change;
+        if (waterClicks < 0) waterClicks = 0;
+        document.getElementById('waterCount').innerText = waterClicks;
+    }
+
+    // 能量膠清單邏輯
+    function addGelRecord() {
+        const timeInput = document.getElementById('gelTime');
+        const list = document.getElementById('gelList');
+        
+        if (timeInput.value.trim() === "") {
+            alert("請輸入補給的時間點或距離！");
+            return;
+        }
+
+        const li = document.createElement('li');
+        li.innerHTML = `<span>⚡ ${timeInput.value}</span> <span style="color:red;cursor:pointer;" onclick="this.parentElement.remove()">❌</span>`;
+        list.appendChild(li);
+        
+        timeInput.value = ""; // 清空輸入框
+    }
+
+    // 表單提交 (目前僅為演示)
+    document.getElementById('trainingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert("紀錄已儲存！(v1.7.1 演示版)");
+        // 在 v1.8 或之後，這裡可以加入 LocalStorage 程式碼
+    });
+</script>
+
+</body>
+</html>
