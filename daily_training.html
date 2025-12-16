@@ -162,11 +162,65 @@
 
     addSegment(); // 預設加一格
 
-    // 表單提交 (準備與 Firebase 連接)
-    document.getElementById('trainingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert("目前介面測試成功！(下一步我們將把資料寫入 db)");
-        // 這裡我們之後會寫入 db.collection('trainings').add(...)
+
+
+
+document.getElementById('trainingForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // 阻止網頁原本的重新整理動作
+
+    const user = auth.currentUser;
+    if (!user) {
+        alert("錯誤：偵測不到使用者登入狀態，無法儲存。");
+        return;
+    }
+
+    // 1. 收集「訓練分段」資料
+    let segments = [];
+    document.querySelectorAll('.segment-card').forEach(card => {
+        segments.push({
+            type: card.querySelector('select').value,
+            distance: parseFloat(card.querySelector('.input-dist').value) || 0,
+            time: parseFloat(card.querySelector('.input-time').value) || 0,
+            rpe: parseInt(card.querySelector('input[type="range"]').value) || 0
+        });
+    });
+
+    // 2. 準備要上傳的資料物件
+    const workoutData = {
+        userId: user.uid, // 重要！標記這筆資料是誰的
+        userEmail: user.email, // 方便後台查看 (選填)
+        date: document.getElementById('trainingDate').value,
+        weather: document.getElementById('weather').value,
+        notes: document.querySelector('textarea').value,
+        segments: segments, // 這是個陣列 (Array)
+        totalDistance: parseFloat(document.getElementById('totalDist').innerText),
+        totalTime: parseInt(document.getElementById('totalTime').innerText),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp() // 紀錄寫入的精確時間
+    };
+
+    // 3. 寫入 Firestore 資料庫
+    // 我們將資料存到名為 'workouts' 的集合中
+    const btn = document.querySelector('.btn-submit');
+    const originalText = btn.innerText;
+    btn.innerText = "☁️ 資料上傳中...";
+    btn.disabled = true;
+
+    db.collection('workouts').add(workoutData)
+        .then((docRef) => {
+            console.log("寫入成功，文件 ID: ", docRef.id);
+            alert("✅ 訓練紀錄已成功儲存到雲端！");
+            window.location.href = "index.html"; // 存完跳回首頁
+        })
+        .catch((error) => {
+            console.error("寫入錯誤: ", error);
+            alert("❌ 儲存失敗: " + error.message);
+            btn.innerText = originalText;
+            btn.disabled = false;
+        });
+});
+
+
+
     });
 </script>
 
