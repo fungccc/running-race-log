@@ -3,112 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>結構化訓練紀錄 - 長跑紀錄 v1.7.1</title>
+    <title>登入 - 長跑紀錄 v1.7.1</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f0f2f5; color: #333; padding: 15px; }
-        .container { max-width: 700px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-        
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.5rem; }
-        h3 { font-size: 1.1rem; color: #34495e; border-bottom: 2px solid #ecf0f1; padding-bottom: 8px; margin-top: 25px; }
-
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 0.9rem; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
-
-        /* 摘要面板 (自動計算區) */
-        .summary-panel {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .summary-item strong { display: block; font-size: 1.4rem; }
-        .summary-item span { font-size: 0.8rem; opacity: 0.9; }
-
-        /* 訓練分段卡片樣式 */
-        .segment-list { display: flex; flex-direction: column; gap: 15px; }
-        .segment-card { 
-            background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; 
-            position: relative; border-left: 5px solid #ccc; transition: all 0.2s;
-        }
-        .segment-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        
-        /* 根據類型改變顏色 */
-        .type-easy { border-left-color: #2ecc71; } /* 綠色 */
-        .type-tempo { border-left-color: #f39c12; } /* 橘色 */
-        .type-interval { border-left-color: #e74c3c; } /* 紅色 */
-        .type-strength { border-left-color: #8e44ad; } /* 紫色 */
-
-        .segment-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .segment-row { display: flex; gap: 10px; margin-bottom: 10px; }
-        .btn-remove { background: none; border: none; color: #999; font-size: 1.2rem; cursor: pointer; position: absolute; top: 10px; right: 10px;}
-        .btn-remove:hover { color: #e74c3c; }
-
-        .btn-add-segment {
-            width: 100%; border: 2px dashed #bdc3c7; background: #f9f9f9; color: #7f8c8d;
-            padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;
-        }
-        .btn-add-segment:hover { background: #ecf0f1; color: #2c3e50; border-color: #95a5a6; }
-
-        .btn-submit { width: 100%; padding: 14px; background-color: #27ae60; color: white; border: none; border-radius: 6px; font-size: 1.1rem; cursor: pointer; margin-top: 30px; font-weight: bold; }
-        
-        /* 強度滑桿 */
-        .range-wrap { display: flex; align-items: center; gap: 10px; }
-        .rpe-value { font-weight: bold; color: #e74c3c; min-width: 30px; }
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
+        .login-card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
+        h2 { color: #333; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #3498db; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #2980b9; }
+        .error-msg { color: red; font-size: 0.9em; margin-top: 10px; display: none; }
+        .toggle-link { margin-top: 15px; font-size: 0.9em; color: #666; cursor: pointer; text-decoration: underline; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>🏃‍♂️ 複合訓練日誌 v1.7.1</h2>
+<div class="login-card">
+    <h2 id="formTitle">登入系統</h2>
+    
+    <input type="email" id="email" placeholder="電子郵件 (Email)" required>
+    <input type="password" id="password" placeholder="密碼 (Password)" required>
+    
+    <button id="btnAction" onclick="handleLogin()">登入</button>
+    
+    <div id="errorMsg" class="error-msg">錯誤訊息</div>
 
-    <form id="trainingForm">
-        <div class="summary-panel">
-            <div class="summary-item">
-                <strong id="totalDist">0.00</strong>
-                <span>總公里 (km)</span>
-            </div>
-            <div class="summary-item">
-                <strong id="totalTime">0</strong>
-                <span>總時間 (min)</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>📅 日期與時間</label>
-            <input type="datetime-local" id="trainingDate" required>
-        </div>
-
-        <h3>🧩 訓練組合 (Segments)</h3>
-        <div id="segmentContainer" class="segment-list">
-            </div>
-
-        <button type="button" class="btn-add-segment" onclick="addSegment()">＋ 新增訓練分段 (例如：熱身、主課表)</button>
-
-        <h3>💧 補給與檢討</h3>
-        <div class="form-group">
-            <label>天氣</label>
-            <select id="weather">
-                <option value="cloudy">☁️ 多雲 (適中)</option>
-                <option value="sunny">☀️ 晴天 (炎熱)</option>
-                <option value="rainy">🌧️ 雨天 (濕滑)</option>
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label>訓練筆記</label>
-            <textarea rows="3" placeholder="身體感受、受傷狀況、補給策略執行情況..."></textarea>
-        </div>
-
-        <button type="submit" class="btn-submit">💾 儲存完整紀錄</button>
-    </form>
+    <div class="toggle-link" onclick="toggleMode()">還沒有帳號？點此註冊</div>
 </div>
-
-
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -117,135 +37,86 @@
 
 <script src="firebase-config.js"></script>
 
-
-
-
-
-
 <script>
-    console.log("目前頁面可以使用 db:", db);
-    // 初始化日期
-    document.getElementById('trainingDate').value = new Date().toISOString().slice(0,16);
+    let isLoginMode = true; // 預設為登入模式
 
-    // 訓練類型定義
-    const workoutTypes = {
-        'easy': { label: '🟢 輕鬆跑 (Easy)', color: 'type-easy' },
-        'tempo': { label: '🟠 節奏跑 (Tempo)', color: 'type-tempo' },
-        'interval': { label: '🔴 間歇跑 (Interval)', color: 'type-interval' },
-        'long': { label: '🔵 長距離 (LSD)', color: 'type-easy' },
-        'strength': { label: '🏋️ 肌力訓練 (Strength)', color: 'type-strength' },
-        'cross': { label: '🚲 交叉訓練 (Cross)', color: 'type-strength' }
-    };
+    function toggleMode() {
+        isLoginMode = !isLoginMode;
+        const title = document.getElementById('formTitle');
+        const btn = document.getElementById('btnAction');
+        const link = document.querySelector('.toggle-link');
+        const errorMsg = document.getElementById('errorMsg');
 
-    // 新增分段
-    function addSegment() {
-        const container = document.getElementById('segmentContainer');
-        const id = Date.now(); // 唯一ID
-        
-        const html = `
-            <div class="segment-card type-easy" id="seg-${id}">
-                <button type="button" class="btn-remove" onclick="removeSegment('${id}')">×</button>
-                <div class="form-group">
-                    <label>類型</label>
-                    <select onchange="updateSegmentType(this, '${id}')" class="segment-type-select">
-                        <option value="easy">🟢 輕鬆跑 (Easy)</option>
-                        <option value="tempo">🟠 節奏跑 (Tempo)</option>
-                        <option value="interval">🔴 間歇跑 (Interval)</option>
-                        <option value="long">🔵 長距離 (LSD)</option>
-                        <option value="strength">🏋️ 肌力訓練</option>
-                        <option value="cross">🚲 交叉訓練</option>
-                    </select>
-                </div>
-                <div class="segment-row">
-                    <div style="flex:1">
-                        <label>距離 (km)</label>
-                        <input type="number" step="0.01" class="input-dist" placeholder="0" oninput="calculateTotals()">
-                    </div>
-                    <div style="flex:1">
-                        <label>時間 (min)</label>
-                        <input type="number" class="input-time" placeholder="0" oninput="calculateTotals()">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>強度 RPE (1-10)</label>
-                    <div class="range-wrap">
-                        <input type="range" min="1" max="10" value="3" oninput="this.nextElementSibling.innerText = this.value">
-                        <span class="rpe-value">3</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
-    }
+        errorMsg.style.display = 'none'; // 清除錯誤訊息
 
-    // 更新卡片顏色與樣式
-    function updateSegmentType(selectElement, id) {
-        const type = selectElement.value;
-        const card = document.getElementById(`seg-${id}`);
-        
-        // 移除所有舊的類型 class
-        Object.values(workoutTypes).forEach(t => card.classList.remove(t.color));
-        
-        // 加入新的類型 class
-        if(workoutTypes[type]) {
-            card.classList.add(workoutTypes[type].color);
-        }
-
-        // UX 優化：如果是肌力訓練，距離預設可以是 0 或隱藏 (這裡暫時保留輸入框但提示不用填)
-        const distInput = card.querySelector('.input-dist');
-        if(type === 'strength' || type === 'cross') {
-            distInput.placeholder = "非必填";
+        if (isLoginMode) {
+            title.innerText = "登入系統";
+            btn.innerText = "登入";
+            link.innerText = "還沒有帳號？點此註冊";
         } else {
-            distInput.placeholder = "0";
+            title.innerText = "註冊新帳號";
+            btn.innerText = "註冊並登入";
+            link.innerText = "已有帳號？點此登入";
         }
     }
 
-    // 移除分段
-    function removeSegment(id) {
-        document.getElementById(`seg-${id}`).remove();
-        calculateTotals();
+    function handleLogin() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorDiv = document.getElementById('errorMsg');
+
+        if (!email || !password) {
+            showError("請輸入帳號與密碼");
+            return;
+        }
+
+        if (isLoginMode) {
+            // --- 執行登入 ---
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // 登入成功
+                    console.log("登入成功:", userCredential.user);
+                    alert("登入成功！");
+                    window.location.href = "index.html"; // 跳轉到首頁
+                })
+                .catch((error) => {
+                    console.error(error);
+                    showError("登入失敗：" + translateError(error.code));
+                });
+        } else {
+            // --- 執行註冊 ---
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // 註冊成功
+                    console.log("註冊成功:", userCredential.user);
+                    alert("註冊成功！歡迎使用");
+                    window.location.href = "index.html"; // 跳轉到首頁
+                })
+                .catch((error) => {
+                    console.error(error);
+                    showError("註冊失敗：" + translateError(error.code));
+                });
+        }
     }
 
-    // 自動計算總合
-    function calculateTotals() {
-        let totalDist = 0;
-        let totalTime = 0;
-
-        document.querySelectorAll('.segment-card').forEach(card => {
-            const d = parseFloat(card.querySelector('.input-dist').value) || 0;
-            const t = parseFloat(card.querySelector('.input-time').value) || 0;
-            totalDist += d;
-            totalTime += t;
-        });
-
-        document.getElementById('totalDist').innerText = totalDist.toFixed(2);
-        document.getElementById('totalTime').innerText = totalTime;
+    function showError(msg) {
+        const el = document.getElementById('errorMsg');
+        el.innerText = msg;
+        el.style.display = 'block';
     }
 
-    // 預設先加一格
-    addSegment();
-
-    // 提交表單模擬
-    document.getElementById('trainingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // 收集資料結構範例 (為了將來開發)
-        let segments = [];
-        document.querySelectorAll('.segment-card').forEach(card => {
-            segments.push({
-                type: card.querySelector('select').value,
-                distance: card.querySelector('.input-dist').value,
-                time: card.querySelector('.input-time').value,
-                rpe: card.querySelector('input[type="range"]').value
-            });
-        });
-
-        console.log("提交的訓練資料:", segments);
-        alert(`已儲存！包含 ${segments.length} 個訓練項目。\n總距離: ${document.getElementById('totalDist').innerText}km`);
-    });
+    // 簡單的錯誤代碼翻譯
+    function translateError(code) {
+        switch(code) {
+            case 'auth/invalid-email': return 'Email 格式不正確';
+            case 'auth/user-not-found': return '找不到此使用者';
+            case 'auth/wrong-password': return '密碼錯誤';
+            case 'auth/email-already-in-use': return '此 Email 已被註冊';
+            case 'auth/weak-password': return '密碼太弱 (至少6位數)';
+            default: return '發生錯誤 (' + code + ')';
+        }
+    }
 </script>
-
-
 
 </body>
 </html>
