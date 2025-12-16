@@ -1,6 +1,4 @@
-// firebase-config.js
-
-// 1. 貼上你剛剛複製的設定內容
+// 
 const firebaseConfig = {
   apiKey: "AIzaSyD-apVIyVlEJIjCXgLfwt2DQIED1agwLik",
   authDomain: "running-log-v1.firebaseapp.com",
@@ -11,14 +9,12 @@ const firebaseConfig = {
   measurementId: "G-YXDJWRFZNN"
 };
 
-// 2. 初始化 Firebase
-// (注意：因為我們是在 HTML 引入 SDK，這裡直接用全域變數 firebase 即可)
+// 初始化 Firebase
 firebase.initializeApp(firebaseConfig);
 
-// 3. 建立並匯出常用的變數
-// 這樣在其他 HTML 裡，我們就可以直接使用 db, auth, analytics 這三個字
+// 匯出我們會用到的變數，讓其他 HTML 檔案直接使用
 const db = firebase.firestore();
 const auth = firebase.auth();
 const analytics = firebase.analytics();
 
-console.log("🔥 Firebase 設定檔已載入，連線成功！");
+console.log("🔥 Firebase 設定檔載入成功");
