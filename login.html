@@ -5,27 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登入 - 長跑紀錄 v1.7.1</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
-        .login-card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
-        h2 { color: #333; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #3498db; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
-        button:hover { background-color: #2980b9; }
-        .error-msg { color: red; font-size: 0.9em; margin-top: 10px; display: none; }
-        .toggle-link { margin-top: 15px; font-size: 0.9em; color: #666; cursor: pointer; text-decoration: underline; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
+        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
+        h2 { color: #2c3e50; margin-bottom: 25px; font-weight: 700; }
+        
+        .input-group { margin-bottom: 15px; text-align: left; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; transition: 0.3s; }
+        input:focus { border-color: #3498db; outline: none; box-shadow: 0 0 5px rgba(52, 152, 219, 0.3); }
+        
+        button { width: 100%; padding: 14px; background-color: #3498db; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button:hover { background-color: #2980b9; transform: translateY(-1px); }
+        
+        .error-msg { color: #e74c3c; font-size: 0.9em; margin-top: 15px; padding: 10px; background: #fdeaea; border-radius: 6px; display: none; }
+        .toggle-link { margin-top: 20px; font-size: 0.9em; color: #7f8c8d; cursor: pointer; text-decoration: underline; }
+        .toggle-link:hover { color: #3498db; }
     </style>
 </head>
 <body>
 
 <div class="login-card">
-    <h2 id="formTitle">登入系統</h2>
+    <h2 id="formTitle">🏃‍♂️ 登入系統</h2>
     
-    <input type="email" id="email" placeholder="電子郵件 (Email)" required>
-    <input type="password" id="password" placeholder="密碼 (Password)" required>
+    <div class="input-group">
+        <input type="email" id="email" placeholder="電子郵件 (Email)" required>
+    </div>
+    <div class="input-group">
+        <input type="password" id="password" placeholder="密碼 (Password)" required>
+    </div>
     
     <button id="btnAction" onclick="handleLogin()">登入</button>
     
-    <div id="errorMsg" class="error-msg">錯誤訊息</div>
+    <div id="errorMsg" class="error-msg"></div>
 
     <div class="toggle-link" onclick="toggleMode()">還沒有帳號？點此註冊</div>
 </div>
@@ -38,7 +48,16 @@
 <script src="firebase-config.js"></script>
 
 <script>
-    let isLoginMode = true; // 預設為登入模式
+    let isLoginMode = true;
+
+    // 檢查是否已經登入，如果已登入直接跳轉
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            console.log("使用者已登入:", user.email);
+            // 這裡可以選擇自動跳轉，目前先不開啟，方便你測試
+            // window.location.href = "daily_training.html"; 
+        }
+    });
 
     function toggleMode() {
         isLoginMode = !isLoginMode;
@@ -50,11 +69,11 @@
         errorMsg.style.display = 'none'; // 清除錯誤訊息
 
         if (isLoginMode) {
-            title.innerText = "登入系統";
+            title.innerText = "🏃‍♂️ 登入系統";
             btn.innerText = "登入";
             link.innerText = "還沒有帳號？點此註冊";
         } else {
-            title.innerText = "註冊新帳號";
+            title.innerText = "📝 註冊新帳號";
             btn.innerText = "註冊並登入";
             link.innerText = "已有帳號？點此登入";
         }
@@ -63,39 +82,28 @@
     function handleLogin() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        const errorDiv = document.getElementById('errorMsg');
-
+        
         if (!email || !password) {
             showError("請輸入帳號與密碼");
             return;
         }
 
         if (isLoginMode) {
-            // --- 執行登入 ---
+            // 登入
             auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // 登入成功
-                    console.log("登入成功:", userCredential.user);
+                .then((cred) => {
                     alert("登入成功！");
-                    window.location.href = "index.html"; // 跳轉到首頁
+                    window.location.href = "daily_training.html"; // 登入後跳轉到訓練紀錄頁
                 })
-                .catch((error) => {
-                    console.error(error);
-                    showError("登入失敗：" + translateError(error.code));
-                });
+                .catch((error) => showError(translateError(error.code)));
         } else {
-            // --- 執行註冊 ---
+            // 註冊
             auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // 註冊成功
-                    console.log("註冊成功:", userCredential.user);
+                .then((cred) => {
                     alert("註冊成功！歡迎使用");
-                    window.location.href = "index.html"; // 跳轉到首頁
+                    window.location.href = "daily_training.html"; // 註冊後跳轉
                 })
-                .catch((error) => {
-                    console.error(error);
-                    showError("註冊失敗：" + translateError(error.code));
-                });
+                .catch((error) => showError(translateError(error.code)));
         }
     }
 
@@ -105,13 +113,12 @@
         el.style.display = 'block';
     }
 
-    // 簡單的錯誤代碼翻譯
     function translateError(code) {
         switch(code) {
             case 'auth/invalid-email': return 'Email 格式不正確';
-            case 'auth/user-not-found': return '找不到此使用者';
+            case 'auth/user-not-found': return '找不到此帳號，請先註冊';
             case 'auth/wrong-password': return '密碼錯誤';
-            case 'auth/email-already-in-use': return '此 Email 已被註冊';
+            case 'auth/email-already-in-use': return '此 Email 已被註冊過';
             case 'auth/weak-password': return '密碼太弱 (至少6位數)';
             default: return '發生錯誤 (' + code + ')';
         }
